@@ -9,30 +9,10 @@
 # 环境变量会覆盖 YAML 中的同名配置
 
 # ============================================================
-# 数据库配置
+# MongoDB 数据库配置
 # ============================================================
-
-# 数据库类型: mongodb | mysql | postgresql
-db_type: "mongodb"
-
-# --- MongoDB（db_type=mongodb 时生效）---
 mongo_uri: "mongodb://localhost:27017/"   # MongoDB 连接地址
-mongo_db: "jimmyspider"                   # 数据库名
-
-# --- MySQL（db_type=mysql 时生效）---
-# mysql_host: "127.0.0.1"
-# mysql_port: 3306
-# mysql_user: "root"
-# mysql_password: ""
-# mysql_db: "jimmyspider"
-
-# --- PostgreSQL（db_type=postgresql 时生效）---
-# pg_host: "127.0.0.1"
-# pg_port: 5432
-# pg_user: "postgres"
-# pg_password: ""
-# pg_db: "jimmyspider"
-# pg_schema: "public"
+mongo_db: "jimmyspider"                   # 数据库名（所有爬虫共用）
 
 # ============================================================
 # Redis 缓存配置（断点续爬、去重、进度记录）

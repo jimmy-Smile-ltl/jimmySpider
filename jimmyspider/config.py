@@ -143,12 +143,6 @@ class Config:
                 return yaml_val
             return default
 
-        # --- 数据库类型 ---
-        # mongodb | mysql | postgresql
-        self.DB_TYPE: str = _get(
-            "db_type", "JIMMYSPIDER_DB_TYPE", "mongodb"
-        )
-
         # --- MongoDB ---
         self.MONGO_URI: str = _get(
             "mongo_uri", "JIMMYSPIDER_MONGO_URI", "mongodb://localhost:27017/"
@@ -203,43 +197,6 @@ class Config:
         # --- 日志 ---
         self.LOG_DIR: Optional[str] = _get(
             "log_dir", "JIMMYSPIDER_LOG_DIR", None
-        )
-
-        # --- MySQL ---
-        self.MYSQL_HOST: str = _get(
-            "mysql_host", "JIMMYSPIDER_MYSQL_HOST", "127.0.0.1"
-        )
-        self.MYSQL_PORT: int = _get(
-            "mysql_port", "JIMMYSPIDER_MYSQL_PORT", 3306
-        )
-        self.MYSQL_USER: str = _get(
-            "mysql_user", "JIMMYSPIDER_MYSQL_USER", "root"
-        )
-        self.MYSQL_PASSWORD: str = _get(
-            "mysql_password", "JIMMYSPIDER_MYSQL_PASSWORD", ""
-        )
-        self.MYSQL_DB: str = _get(
-            "mysql_db", "JIMMYSPIDER_MYSQL_DB", "jimmyspider"
-        )
-
-        # --- PostgreSQL ---
-        self.PG_HOST: str = _get(
-            "pg_host", "JIMMYSPIDER_PG_HOST", "127.0.0.1"
-        )
-        self.PG_PORT: int = _get(
-            "pg_port", "JIMMYSPIDER_PG_PORT", 5432
-        )
-        self.PG_USER: str = _get(
-            "pg_user", "JIMMYSPIDER_PG_USER", "postgres"
-        )
-        self.PG_PASSWORD: str = _get(
-            "pg_password", "JIMMYSPIDER_PG_PASSWORD", ""
-        )
-        self.PG_DB: str = _get(
-            "pg_db", "JIMMYSPIDER_PG_DB", "jimmyspider"
-        )
-        self.PG_SCHEMA: str = _get(
-            "pg_schema", "JIMMYSPIDER_PG_SCHEMA", "public"
         )
 
         # --- SSL ---

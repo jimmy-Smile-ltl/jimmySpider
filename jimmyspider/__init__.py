@@ -3,7 +3,7 @@ jimmySpider - Python 爬虫框架
 
 一个成熟、灵活的 Python 爬虫框架，提供：
 - 6 种请求处理器（单线程/多线程/异步 + curl_cffi TLS 指纹伪装）
-- 3 种数据库支持（MongoDB / MySQL / PostgreSQL，自动 upsert、批量写入）
+- MongoDB 存储（自动 upsert、批量写入、去重）
 - Redis 断点续爬（页码/日期/错误 URL 缓存）
 - 代理管理（隧道代理 + Clash 多节点代理池）
 - 文件下载器（多线程/异步/curl_cffi）
@@ -50,10 +50,3 @@ __all__ = [
     "extractSoup",
     "get_config",
 ]
-
-# MySQL / PostgreSQL 为可选依赖，需安装对应驱动
-#   pip install jimmyspider[mysql]       → pymysql
-#   pip install jimmyspider[postgresql]  → psycopg2-binary
-# 直接导入（无驱动时设为 None）:
-#   from jimmyspider.mysql import MySQLHandler
-#   from jimmyspider.postgresql import PostgreSQLHandler

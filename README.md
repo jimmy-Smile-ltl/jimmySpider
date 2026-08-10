@@ -42,16 +42,10 @@
 - MongoDB（数据存储）
 - Redis（断点续爬缓存）
 
-### pip 安装
-
-```bash
-pip install jimmyspider
-```
-
 ### 从源码安装
 
 ```bash
-git clone https://github.com/jimmysmile/jimmySpider.git
+git clone https://github.com/jimmy-Smile-ltl/jimmySpider.git
 cd jimmySpider
 pip install -e .
 ```

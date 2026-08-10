@@ -23,13 +23,7 @@ A mature, flexible Python web scraping framework, battle-tested across **140+ we
 ## 📦 Installation
 
 ```bash
-pip install jimmyspider
-```
-
-Or from source:
-
-```bash
-git clone https://github.com/jimmysmile/jimmySpider.git
+git clone https://github.com/jimmy-Smile-ltl/jimmySpider.git
 cd jimmySpider
 pip install -e .
 ```
