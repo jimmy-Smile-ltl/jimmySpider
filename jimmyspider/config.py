@@ -143,6 +143,11 @@ class Config:
                 return yaml_val
             return default
 
+        # --- 数据库类型: mongodb | mysql | postgresql ---
+        self.DB_TYPE: str = _get(
+            "db_type", "JIMMYSPIDER_DB_TYPE", "mongodb"
+        )
+
         # --- MongoDB ---
         self.MONGO_URI: str = _get(
             "mongo_uri", "JIMMYSPIDER_MONGO_URI", "mongodb://localhost:27017/"

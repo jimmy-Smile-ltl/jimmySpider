@@ -82,6 +82,16 @@ export JIMMYSPIDER_MONGO_URI="mongodb://prod-host:27017/"
 | `pg_host` | `JIMMYSPIDER_PG_HOST` | `127.0.0.1` |
 | `pg_port` | `JIMMYSPIDER_PG_PORT` | `5432` |
 | `pg_schema` | `JIMMYSPIDER_PG_SCHEMA` | `public` |
+| `mysql_host` | `JIMMYSPIDER_MYSQL_HOST` | `127.0.0.1` |
+| `mysql_port` | `JIMMYSPIDER_MYSQL_PORT` | `3306` |
+| `mysql_user` | `JIMMYSPIDER_MYSQL_USER` | `root` |
+| `mysql_password` | `JIMMYSPIDER_MYSQL_PASSWORD` | - |
+| `mysql_db` | `JIMMYSPIDER_MYSQL_DB` | `jimmyspider` |
+| `pg_host` | `JIMMYSPIDER_PG_HOST` | `127.0.0.1` |
+| `pg_port` | `JIMMYSPIDER_PG_PORT` | `5432` |
+| `pg_user` | `JIMMYSPIDER_PG_USER` | `postgres` |
+| `pg_password` | `JIMMYSPIDER_PG_PASSWORD` | - |
+| `pg_db` | `JIMMYSPIDER_PG_DB` | `jimmyspider` |
 
 ## 全部环境变量
 
@@ -231,5 +241,5 @@ ENV JIMMYSPIDER_MONGO_URI=mongodb://mongo:27017/
 ENV JIMMYSPIDER_REDIS_HOST=redis
 ENV JIMMYSPIDER_DATA_DIR=/data/spider_files
 
-RUN pip install jimmyspider
+RUN git clone https://github.com/jimmy-Smile-ltl/jimmySpider.git && cd jimmySpider && pip install -e .
 ```

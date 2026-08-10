@@ -33,7 +33,7 @@ python spider.py
 
 ## 前置条件
 
-- 已安装 `jimmyspider` 框架（`pip install -e .` 或 `pip install jimmyspider`）及 `beautifulsoup4`
+- 已安装 `jimmyspider` 框架（`pip install -e .` 或 `pip install -e .`）及 `beautifulsoup4`
 - 本地 MongoDB（默认 `mongodb://localhost:27017`，库 `jimmyspider`）—— 结果保存地
 - 无需 Redis（本示例不演示断点续爬）、无需登录、无需代理
 - 网络可达 Hacker News；如无法访问，把 `self.list_url` 换成任意简单网站即可

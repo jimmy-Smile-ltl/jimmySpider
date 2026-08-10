@@ -207,7 +207,7 @@
 
 ```bash
 # 安装框架
-pip install jimmyspider
+pip install -e .
 
 # 确保 MongoDB 和 Redis 在本地运行
 

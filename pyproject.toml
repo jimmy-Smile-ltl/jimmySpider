@@ -46,8 +46,14 @@ dev = [
 yaml = [
     "PyYAML>=6.0",
 ]
+mysql = [
+    "pymysql>=1.0",
+]
+postgresql = [
+    "psycopg2-binary>=2.9",
+]
 all = [
-    "jimmyspider[dev,yaml]",
+    "jimmyspider[dev,yaml,mysql,postgresql]",
 ]
 
 [project.urls]

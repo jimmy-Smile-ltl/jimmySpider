@@ -107,7 +107,7 @@ The `examples/` directory contains 9 spider examples curated from real-world pro
 
 ```bash
 # Install the framework
-pip install jimmyspider
+pip install -e .
 
 # Make sure MongoDB and Redis are running locally
 

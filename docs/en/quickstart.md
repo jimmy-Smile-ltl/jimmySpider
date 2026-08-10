@@ -10,7 +10,7 @@
 
 ```bash
 # Install from PyPI
-pip install jimmyspider
+pip install -e .
 
 # Or install from source
 git clone https://github.com/jimmysmile/jimmySpider.git

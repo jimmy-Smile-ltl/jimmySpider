@@ -9,11 +9,7 @@
 ## 安装
 
 ```bash
-# PyPI 安装
-pip install jimmyspider
-
-# 或从源码安装
-git clone https://github.com/jimmysmile/jimmySpider.git
+git clone https://github.com/jimmy-Smile-ltl/jimmySpider.git
 cd jimmySpider
 pip install -e .
 ```

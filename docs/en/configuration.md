@@ -212,5 +212,5 @@ ENV JIMMYSPIDER_MONGO_URI=mongodb://mongo:27017/
 ENV JIMMYSPIDER_REDIS_HOST=redis
 ENV JIMMYSPIDER_DATA_DIR=/data/spider_files
 
-RUN pip install jimmyspider
+RUN pip install -e .
 ```
