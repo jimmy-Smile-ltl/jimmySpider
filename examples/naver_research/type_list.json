@@ -1,0 +1,32 @@
+[
+    {
+        "type_kr": "시황정보 리포트",
+        "type_url": "https://finance.naver.com/research/market_info_list.naver",
+        "type_cn": "行情信息报告"
+    },
+    {
+        "type_kr": "투자정보 리포트",
+        "type_url": "https://finance.naver.com/research/invest_list.naver",
+        "type_cn": "投资信息报告"
+    },
+    {
+        "type_kr": "종목분석 리포트",
+        "type_url": "https://finance.naver.com/research/company_list.naver",
+        "type_cn": "个股分析报告"
+    },
+    {
+        "type_kr": "산업분석 리포트",
+        "type_url": "https://finance.naver.com/research/industry_list.naver",
+        "type_cn": "行业分析报告"
+    },
+    {
+        "type_kr": "경제분석 리포트",
+        "type_url": "https://finance.naver.com/research/economy_list.naver",
+        "type_cn": "经济分析报告"
+    },
+    {
+        "type_kr": "채권분석 리포트",
+        "type_url": "https://finance.naver.com/research/debenture_list.naver",
+        "type_cn": "债券分析报告"
+    }
+]

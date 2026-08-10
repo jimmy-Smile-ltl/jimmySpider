@@ -1,6 +1,6 @@
 # jimmySpider Examples
 
-This directory contains 10 real-world spider projects that demonstrate the jimmySpider framework in action.
+This directory contains 18 real-world spider projects that demonstrate the jimmySpider framework in action.
 
 ## Quick Navigation
 
@@ -16,6 +16,14 @@ This directory contains 10 real-world spider projects that demonstrate the jimmy
 | 8 | [escholarship_org/](escholarship_org/) | Academic papers | `CurlCffiAsync`, AWS WAF |
 | 9 | [pubmed_ncbi/](pubmed_ncbi/) | PubMed database | Date-range splitting, multi-threading |
 | 10 | [oatd/](oatd/) | OATD theses (Cloudflare-protected) | `AsyncRequestHandler`, cookie refresh |
+| 11 | [naver_research/](naver_research/) | Naver Finance research reports (Korean) | Custom parser module, category resume |
+| 12 | [yaozh_pharma/](yaozh_pharma/) | Chinese pharma database (yaozh) | Logged-in session, pagination from HTML data attributes |
+| 13 | [medsci/](medsci/) | Medical science guidelines | Category API + per-category pagination |
+| 14 | [gspublishing/](gspublishing/) | Goldman Sachs research reports | POST JSON search API, timestamp formatting |
+| 15 | [boc_fimarkets/](boc_fimarkets/) | Bank of China financial markets | list+detail, attachment-per-record, encoding detection |
+| 16 | [hello_world/](hello_world/) | Hacker News | Minimal complete spider, `extractSoup` HTML parsing |
+| 17 | [twse_taiwan/](twse_taiwan/) | Taiwan TWSE MOPS | Financial announcements, JSON POST slicing |
+| 18 | [chinamoney/](chinamoney/) | China Money Network | Credit ratings, POST pagination, checkpoint |
 
 ## How to Use These Examples
 
@@ -23,10 +31,11 @@ This directory contains 10 real-world spider projects that demonstrate the jimmy
 
 Find the example that most closely matches your target website type:
 
-- **Financial/API data** → eastmoney_report, moj_regulations
-- **Government/news sites** → state_council_policy
-- **Academic/university** → unicamp_br, cuni_cz, escholarship_org, pubmed_ncbi
-- **Medical/health** → medlive_guide
+- **Financial/API data** → eastmoney_report, moj_regulations, gspublishing, boc_fimarkets, twse_taiwan, chinamoney
+- **Government/news sites** → state_council_policy, boc_fimarkets
+- **Academic/university** → unicamp_br, cuni_cz, escholarship_org, pubmed_ncbi, naver_research
+- **Medical/health** → medlive_guide, medsci, yaozh_pharma
+- **International/non-Chinese sites** → naver_research, gspublishing, unicamp_br, cuni_cz, escholarship_org
 - **Cloudflare-protected** → cicc_report, escholarship_org
 
 ### 2. Read the module docstring
@@ -88,7 +97,7 @@ spider_supplement.py →  fill in missing items
 
 | If you want to learn about... | Look at... |
 |------------------------------|------------|
-| `SingleRequestHandler` usage | eastmoney_report, state_council_policy, moj_regulations |
+| `SingleRequestHandler` usage | eastmoney_report, state_council_policy, moj_regulations, naver_research, yaozh_pharma, medsci, gspublishing, boc_fimarkets |
 | `ThreadRequestHandler` usage | cuni_cz, pubmed_ncbi |
 | `CurlRequestHandler` usage | cicc_report |
 | `CurlCffiAsyncRequestHandler` usage | escholarship_org |
@@ -97,7 +106,9 @@ spider_supplement.py →  fill in missing items
 | Redis checkpoint/resume | eastmoney_report, state_council_policy |
 | `Cache` for error retry sets | eastmoney_report, unicamp_br |
 | `safe_extract_json` nested access | moj_regulations |
-| `convert_date_robust` date parsing | state_council_policy |
+| `convert_date_robust` date parsing | state_council_policy, boc_fimarkets |
+| `extractSoup` HTML parsing | hello_world, boc_fimarkets |
+| Custom parser module (per-site layout) | naver_research |
 | `rename_keys_inplace` field mapping | moj_regulations |
 | `FileDownloader` file download | eastmoney_report, cicc_report |
 | `generate_string_id` / `generate_doi_id` | pubmed_ncbi, escholarship_org |

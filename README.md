@@ -143,6 +143,60 @@ python spider.py
 
 ## 💡 核心概念
 
+### 为什么选择 jimmySpider？
+
+**继承基类，省去 90% 的样板代码**。对比一下传统写法：
+
+```python
+# ❌ 传统爬虫：要手动管理一切
+import requests, pymongo, redis, logging, os, time
+from pathlib import Path
+
+# 50 行配置代码
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+db = client["my_db"]
+redis_client = redis.StrictRedis(host="127.0.0.1", port=6379)
+logger = logging.getLogger("spider")
+# ... 还有代理、断点、文件下载、日志轮转 ...
+
+# 10 行业务代码
+def run():
+    url = "https://example.com"
+    res = requests.get(url)
+    db.my_collection.insert_one({"data": res.text})
+```
+
+```python
+# ✅ jimmySpider：继承基类，只写 10 行业务逻辑
+from pathlib import Path
+from jimmyspider import JimmySpider, Cache
+
+class Spider(JimmySpider):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)          # 自动装配 MongoDB / Redis / 日志 / 代理 / 请求器
+        self.page = Cache(f"{self.table_name}_page")
+
+    def run(self):
+        url = "https://example.com"
+        res = self.single_fetcher.fetch(url)   # 代理自动轮换、403 自动重试
+        self.save_result({"_id": "1", "data": res[url]})  # 自动 upsert + 统计
+
+if __name__ == "__main__":
+    Spider(pro_path=Path(__file__).parent).run()
+```
+
+**`super().__init__()` 一行干掉了什么？**
+
+| 你不再需要写的 | 自动装配的 |
+|--------------|-----------|
+| MongoDB 连接 + 重连 + 自启动 | `self.db_manager` |
+| Redis 连接 + 断点缓存 CRUD | `Cache(key)` |
+| 请求器（含代理轮换/自动重试/反爬检测） | `self.single_fetcher` |
+| 文件下载（含 MIME 检测/多线程/断点续传） | `self.file_saver` |
+| 日志系统（控制台 + 按天轮转 + 自动清理） | `self.log_print` |
+| HTML 清洗 + 按日期归档 | `self.html_saver` |
+| BS4 解析工具集 | `self.extract_soup` |
+
 ### 1. 目录名即一切
 
 jimmySpider 遵循"约定大于配置"原则：
@@ -272,7 +326,7 @@ class Spider(JimmySpider):
 
 ## 📂 示例项目
 
-`examples/` 目录包含 **13 个实战爬虫示例**：
+`examples/` 目录包含 **18 个实战爬虫示例**：
 
 | 示例 | 来源站点 | 展示特性 |
 |------|---------|---------|
@@ -289,6 +343,11 @@ class Spider(JimmySpider):
 | `oatd/` | OATD 学位论文 | AsyncRequestHandler、Cookie 刷新、代理轮换 |
 | `twse_taiwan/` | 台湾证交所 MOPS | 金融数据、JSON POST 分片、并发详情 |
 | `chinamoney/` | 中国货币网 | 信用评级、POST API 分页、断点续爬 |
+| `naver_research/` | Naver 研报 | 韩文页面解析、自定义解析模块、分类断点 |
+| `yaozh_pharma/` | 药智网 | 医药数据库、登录会话、HTML 数据属性分页 |
+| `medsci/` | 梅斯医学 | 分类接口动态遍历、验证码风控提示 |
+| `gspublishing/` | 高盛研报 | 复杂 JSON POST、时间戳格式化、raw_data 保留 |
+| `boc_fimarkets/` | 中国银行 | list+detail、附件拆分入库、编码自适应 |
 
 每个示例都有详细的模块文档字符串。完整说明见 [docs/examples.md](docs/examples.md)。
 
@@ -349,7 +408,7 @@ my_spider_project/
 | [docs/configuration.md](docs/configuration.md) | 所有环境变量详解 |
 | [docs/request_handlers.md](docs/request_handlers.md) | 请求处理器选择指南 |
 | [docs/proxy.md](docs/proxy.md) | 代理配置指南（隧道 + Clash） |
-| [docs/examples.md](docs/examples.md) | 13 个示例项目详解 |
+| [docs/examples.md](docs/examples.md) | 18 个示例项目详解 |
 
 ## 🤝 贡献
 

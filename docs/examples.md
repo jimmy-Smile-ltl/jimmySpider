@@ -1,6 +1,6 @@
 # 示例项目
 
-`examples/` 目录包含 13 个从实战中精选的爬虫示例，展示了 jimmySpider 框架在不同场景下的用法。
+`examples/` 目录包含 18 个从实战中精选的爬虫示例，展示了 jimmySpider 框架在不同场景下的用法。
 
 ## 示例列表
 
@@ -148,6 +148,61 @@
 
 **适用场景**: 金融数据、POST API 分页、断点精确恢复
 
+### 14. naver_research — Naver 研报（韩国）
+
+**文件**: `spider.py`, `parser.py`, `type_list.json`  
+**展示特性**:
+- 韩文页面解析：6 类研究报告（行情/投资/个股/行业/经济/债券）共享表格解析约定
+- 自定义解析模块：`parser.py` 用 `_PARSER_MAP` 路由表按 type_url 分发到 6 个 `parse_xxx` 函数
+- 表格行类型识别（跳过表头/分隔行）+ 韩文日期标准化（YY.MM.DD → YYYY-MM-DD）
+- 分类维度断点续爬（当前分类 + 页码 + 已完成分类集合）
+
+**适用场景**: 国际站点、同一站点多种页面结构、自定义解析器设计
+
+### 15. yaozh_pharma — 药智网临床指南
+
+**文件**: `spider.py`  
+**展示特性**:
+- 登录会话依赖站点（Cookie 已清空，运行前需自行填写）
+- 分页信息从 HTML 数据属性读取（`data-widget=dbPagination` 的 data-total/data-size）
+- 表格行解析（`<th>` 年份 + 4 个 `<td>` 字段）+ 页间限速
+- Redis 断点续爬 + 错误页重试
+
+**适用场景**: 医药数据库、需登录会话的站点、数据属性驱动的分页
+
+### 16. medsci — 梅斯医学指南
+
+**文件**: `spider.py`  
+**展示特性**:
+- 两级数据流：分类接口（columnList）动态下发分类，再按分类分页抓列表
+- 分类维度 JSON 断点（{cat_idx, page}）精确恢复
+- 反爬感知设计：连续 ~25 次请求触发腾讯滑块验证码（200 但无数据），页间限速降触发
+- 失败页带 (cat_id, tenant) 上下文重试，防御性跳过避免死循环
+
+**适用场景**: 医学指南/期刊、分类接口驱动的采集、验证码风控站点
+
+### 17. gspublishing — 高盛研报
+
+**文件**: `spider.py`  
+**展示特性**:
+- POST JSON 复杂查询 payload（facets/language/sort/limitTo/filter 检索语法）
+- 毫秒时间戳统一格式化 + `urljoin` 附件链接构建
+- raw_data 原始记录全量保留，便于后续扩展字段
+- JSON 序列化断点 + 错误页 3 轮重试
+
+**适用场景**: 投行/金融研报 API、复杂 JSON POST、时间戳处理
+
+### 18. boc_fimarkets — 中国银行金融市场
+
+**文件**: `spider.py`  
+**展示特性**:
+- list+detail 两阶段 + 分页 URL 规律拼接（index.html / index_{n}.html）
+- 编码自适应（apparent_encoding 处理 GBK/UTF-8 混合页面）
+- `convert_date_robust` 日期标准化 + `extract_content_recursively` 正文递归清洗
+- 附件拆分入库（一个详情页 N 条记录，_id = MD5(url::file_url)）+ 双级错误重试
+
+**适用场景**: 银行/政府官网、list+detail、附件下载链接提取
+
 ## 运行示例
 
 ```bash
@@ -175,13 +230,17 @@ python spider.py
 | 大学数据，list+detail | `cuni_cz` |
 | AWS WAF / 高并发 | `escholarship_org` |
 | 大型数据库，分片策略 | `pubmed_ncbi` |
-| 金融数据（公告/评级/研报） | `twse_taiwan`, `chinamoney` |
+| 金融数据（公告/评级/研报） | `twse_taiwan`, `chinamoney`, `gspublishing`, `boc_fimarkets` |
+| 国际站点（韩文页面） | `naver_research` |
+| 医药/医学数据库 | `yaozh_pharma`, `medsci` |
+| 投行研报 JSON API | `gspublishing` |
+| 银行官网 list+detail | `boc_fimarkets` |
 
 ## 按请求处理器选示例
 
 | 处理器 | 示例 |
 |--------|------|
-| `SingleRequestHandler` | hello_world, eastmoney_report, state_council_policy, moj_regulations, twse_taiwan, chinamoney |
+| `SingleRequestHandler` | hello_world, eastmoney_report, state_council_policy, moj_regulations, twse_taiwan, chinamoney, naver_research, yaozh_pharma, medsci, gspublishing, boc_fimarkets |
 | `AsyncRequestHandler` | oatd |
 | `ThreadRequestHandler` | cuni_cz, pubmed_ncbi |
 | `CurlRequestHandler` | oatd（cookie_flush 场景下可用于 TLS 伪装） |

@@ -126,7 +126,7 @@ The config file is auto-detected from current directory, home directory (`~/.jim
 
 ## 📂 Examples
 
-See `examples/` for 9 real-world spider projects.
+See `examples/` for 18 real-world spider projects.
 
 ## 🏗️ Project Conventions
 
