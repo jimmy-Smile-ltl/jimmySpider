@@ -62,10 +62,11 @@ class Spider(JimmySpider):
             "PHPSESSID": "",
             "XSRF-TOKEN": "",
             "laravel_session": "",
-            "Hm_lvt_62d92d99f7c1e7a31a11759de376479f": "1777285949",
-            "Hm_lpvt_62d92d99f7c1e7a31a11759de376479f": "1777286686",
-            "_pk_id.3.a971": "a4afa81e24359b29.1777286686.1.1777286686.1777286686.",
-            "_pk_ses.3.a971": "*"
+            # 百度统计 / Matomo 追踪 cookie，留空即可
+            "Hm_lvt_62d92d99f7c1e7a31a11759de376479f": "",
+            "Hm_lpvt_62d92d99f7c1e7a31a11759de376479f": "",
+            "_pk_id.3.a971": "",
+            "_pk_ses.3.a971": ""
         }
         self.csrf_token = ""
         self.log_page = Cache(f"{self.table_name}_log_page")

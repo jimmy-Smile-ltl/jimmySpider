@@ -60,13 +60,15 @@ class Spider(JimmySpider):
         # 会话凭证（PHPSESSID / XSRF-TOKEN / laravel_session）已移除，
         # 运行前请填入自己浏览器中的有效值
         self.cookies = {
+            # 会话凭证（PHPSESSID / XSRF-TOKEN / laravel_session）需从浏览器获取
             "PHPSESSID": "",
-            "Hm_lvt_62d92d99f7c1e7a31a11759de376479f": "1777285949",
-            "ymt_pk_id": "a4afa81e24359b29",
-            "HMACCOUNT": "9C17577EF520A8CE",
-            "_pk_ses.3.a971": "*",
-            "Hm_lpvt_62d92d99f7c1e7a31a11759de376479f": "1777342197",
-            "_pk_id.3.a971": "a4afa81e24359b29.1777286686.2.1777342197.1777287112.",
+            # 百度统计 / Matomo 追踪 cookie，留空即可
+            "Hm_lvt_62d92d99f7c1e7a31a11759de376479f": "",
+            "ymt_pk_id": "",
+            "HMACCOUNT": "",
+            "_pk_ses.3.a971": "",
+            "Hm_lpvt_62d92d99f7c1e7a31a11759de376479f": "",
+            "_pk_id.3.a971": "",
             "XSRF-TOKEN": "",
             "laravel_session": ""
         }

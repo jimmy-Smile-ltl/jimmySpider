@@ -52,16 +52,18 @@ class Spider(JimmySpider):
             "sec-ch-ua-platform": "\"Linux\"",
         }
         self.cookies = {
-            "qgqp_b_id": "eae15102c3316da97349d75b35c97f07",
+            # 以下为站点追踪 cookie，留空即可正常运行（服务器会自动设置）
+            # 如需模拟已登录用户，从浏览器复制 cookie 填入
+            "qgqp_b_id": "",
             "fullscreengg": "1",
             "fullscreengg2": "1",
-            "st_si": "03346776275771",
-            "st_asi": "delete",
-            "st_pvi": "92999383062685",
-            "st_sp": "2023-04-27%2000%3A30%3A56",
-            "st_inirUrl": "https%3A%2F%2Fcn.bing.com%2F",
-            "st_sn": "22",
-            "st_psi": "2025062311202898-113300303756-1044950580",
+            "st_si": "",
+            "st_asi": "",
+            "st_pvi": "",
+            "st_sp": "",
+            "st_inirUrl": "",
+            "st_sn": "",
+            "st_psi": "",
         }
 
     def _encode_cache(self, value: Dict) -> str:
