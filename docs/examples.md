@@ -1,6 +1,6 @@
 # 示例项目
 
-`examples/` 目录包含 9 个从实战中精选的爬虫示例，展示了 jimmySpider 框架在不同场景下的用法。
+`examples/` 目录包含 10 个从实战中精选的爬虫示例，展示了 jimmySpider 框架在不同场景下的用法。
 
 ## 示例列表
 
@@ -52,12 +52,12 @@
 
 **文件**: `spider.py`  
 **展示特性**:
-- `CurlRequestHandler` TLS 指纹伪装（chrome120）
-- 加速乐 CDN Cookie 挑战求解
+- 加速乐 CDN Cookie 挑战求解（execjs + JS 逆向）
 - JS 加密上下文集成（`_load_cookie_js_ctx`）
 - 报告 PDF 下载 + JSON 元数据提取
+- 多页翻页 + MongoDB 批量 upsert
 
-**适用场景**: Cloudflare/加速乐保护网站、需要 TLS 指纹伪装的场景
+**适用场景**: 加速乐 CDN 保护网站、JS 逆向 Cookie 求解
 
 ### 6. unicamp_br — 巴西大学机构库
 
@@ -103,6 +103,17 @@
 
 **适用场景**: 大型学术数据库、API 分片策略、多阶段数据流水线
 
+### 10. oatd — OATD 学位论文
+
+**文件**: `spider.py`, `spider_list.py`, `cookie_flush_playwright_cdp.py`  
+**展示特性**:
+- `AsyncRequestHandler` aiohttp 异步高并发
+- Cloudflare Turnstile 验证绕过（Playwright CDP）
+- Cookie 刷新 + 代理轮换
+- `asyncio.Semaphore` 并发控制
+
+**适用场景**: Cloudflare 保护的学术网站、需动态 cookie 刷新的场景
+
 ## 运行示例
 
 ```bash
@@ -124,7 +135,7 @@ python spider.py
 | 政府网站，翻页列表 | `state_council_policy` |
 | API JSON 采集 | `moj_regulations` |
 | 分类树结构网站 | `medlive_guide` |
-| Cloudflare / TLS 检测 | `cicc_report` |
+| 加速乐 CDN / JS 逆向 | `cicc_report` |
 | 大学论文，多维度采集 | `unicamp_br` |
 | 大学数据，list+detail | `cuni_cz` |
 | AWS WAF / 高并发 | `escholarship_org` |
@@ -137,7 +148,7 @@ python spider.py
 | `SingleRequestHandler` | eastmoney_report, state_council_policy, moj_regulations |
 | `AsyncRequestHandler` | — |
 | `ThreadRequestHandler` | cuni_cz, pubmed_ncbi |
-| `CurlRequestHandler` | cicc_report |
+| `CurlRequestHandler` | oatd（cookie_flush 场景下可用于 TLS 伪装） |
 | `CurlCffiThreadRequestHandler` | — |
 | `CurlCffiAsyncRequestHandler` | escholarship_org |
 

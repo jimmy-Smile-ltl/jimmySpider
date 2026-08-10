@@ -346,7 +346,7 @@ my_spider_project/
 | [docs/configuration.md](docs/configuration.md) | 所有环境变量详解 |
 | [docs/request_handlers.md](docs/request_handlers.md) | 请求处理器选择指南 |
 | [docs/proxy.md](docs/proxy.md) | 代理配置指南（隧道 + Clash） |
-| [docs/examples.md](docs/examples.md) | 9 个示例项目详解 |
+| [docs/examples.md](docs/examples.md) | 10 个示例项目详解 |
 
 ## 🤝 贡献
 

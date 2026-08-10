@@ -351,10 +351,11 @@ class SingleRequestHandler:
 
 
 class CurlRequestHandler:
-    def __init__(self, test_url=None, use_clash_pool=False):
+    def __init__(self, test_url=None, use_clash_pool=False, impersonate="chrome120"):
         self.ca_bundle_path = certifi.where()
         self.test_url = test_url
         self.use_clash_pool = use_clash_pool
+        self.impersonate = impersonate
         if all([test_url, use_clash_pool]):
             print("警告：同时提供 test_url 和 use_clash_pool=True，优先使用 test_url 获取代理")
         if test_url:
@@ -431,11 +432,13 @@ class CurlRequestHandler:
             return False, b""
 
     def fetch(self, url, headers=None, cookies=None, method="GET",
-              retry_count=10, impersonate="chrome120",
+              retry_count=10, impersonate=None,
               stream=False,
               min_speed_bytes: int = 30 * 1024,
               speed_check_interval: float = 5.0,
               **kwargs):
+        if impersonate is None:
+            impersonate = self.impersonate
         """
         stream=False：普通请求，返回 response 或 None。
         stream=True ：流式请求，边下载边检测速度，速度达标返回带完整 content 的 response，否则重试，最终返回 None。

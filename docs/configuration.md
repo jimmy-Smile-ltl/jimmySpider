@@ -57,10 +57,31 @@ export JIMMYSPIDER_MONGO_URI="mongodb://prod-host:27017/"
 
 ## 全部配置项
 
-### YAML 方式
-export JIMMYSPIDER_REDIS_PASSWORD=""
-export JIMMYSPIDER_DATA_DIR="/data/spider_files"
-```
+### YAML 配置项
+
+| YAML 键 | 对应环境变量 | 默认值 |
+|---------|-------------|--------|
+| `mongo_uri` | `JIMMYSPIDER_MONGO_URI` | `mongodb://localhost:27017/` |
+| `mongo_db` | `JIMMYSPIDER_MONGO_DB` | `jimmyspider` |
+| `db_type` | `JIMMYSPIDER_DB_TYPE` | `mongodb` |
+| `redis_host` | `JIMMYSPIDER_REDIS_HOST` | `127.0.0.1` |
+| `redis_port` | `JIMMYSPIDER_REDIS_PORT` | `6379` |
+| `redis_password` | `JIMMYSPIDER_REDIS_PASSWORD` | - |
+| `redis_db` | `JIMMYSPIDER_REDIS_DB` | `0` |
+| `data_dir` | `JIMMYSPIDER_DATA_DIR` | `~/spider_files` |
+| `proxy_tunnel_url` | `JIMMYSPIDER_PROXY_TUNNEL_URL` | - |
+| `proxy_api_url` | `JIMMYSPIDER_PROXY_API_URL` | - |
+| `clash_api_url` | `JIMMYSPIDER_CLASH_API_URL` | `http://127.0.0.1:9097` |
+| `clash_secret` | `JIMMYSPIDER_CLASH_SECRET` | - |
+| `clash_proxy_url` | `JIMMYSPIDER_CLASH_PROXY_URL` | `http://127.0.0.1:7897` |
+| `clash_policy_group` | `JIMMYSPIDER_CLASH_POLICY_GROUP` | `自动选择` |
+| `log_dir` | `JIMMYSPIDER_LOG_DIR` | - |
+| `ssl_cert_file` | `JIMMYSPIDER_SSL_CERT_FILE` | - |
+| `mysql_host` | `JIMMYSPIDER_MYSQL_HOST` | `127.0.0.1` |
+| `mysql_port` | `JIMMYSPIDER_MYSQL_PORT` | `3306` |
+| `pg_host` | `JIMMYSPIDER_PG_HOST` | `127.0.0.1` |
+| `pg_port` | `JIMMYSPIDER_PG_PORT` | `5432` |
+| `pg_schema` | `JIMMYSPIDER_PG_SCHEMA` | `public` |
 
 ## 全部环境变量
 
