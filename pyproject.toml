@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jimmyspider"
+version = "1.0.0"
+description = "A mature, flexible Python web scraping framework with multiple request handlers, MongoDB/Redis storage, proxy management, and anti-bot TLS fingerprinting."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Jimmy Smile"}
+]
+keywords = ["web-scraping", "crawler", "spider", "anti-bot", "proxy", "curl-cffi"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "requests",
+    "beautifulsoup4",
+    "pymongo",
+    "redis",
+    "aiohttp",
+    "curl_cffi>=0.6",
+    "certifi",
+    "pathvalidate",
+    "python-dateutil",
+    "dateparser",
+    "DrissionPage",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+]
+yaml = [
+    "PyYAML>=6.0",
+]
+mysql = [
+    "pymysql>=1.0",
+]
+postgresql = [
+    "psycopg2-binary>=2.9",
+]
+all = [
+    "jimmyspider[dev,yaml,mysql,postgresql]",
+]
+
+[project.urls]
+Homepage = "https://github.com/jimmysmile/jimmySpider"
+Documentation = "https://github.com/jimmysmile/jimmySpider#readme"
+Repository = "https://github.com/jimmysmile/jimmySpider"
+Issues = "https://github.com/jimmysmile/jimmySpider/issues"
+
+[tool.setuptools.packages.find]
+include = ["jimmyspider*"]

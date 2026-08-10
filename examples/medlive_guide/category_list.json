@@ -1,0 +1,164 @@
+[
+    {
+        "type_name": "内科",
+        "type_value": "7777",
+        "sub_category_list": [
+            {
+                "sec_name": "心血管内科",
+                "sec_value": "1"
+            },
+            {
+                "sec_name": "神经内科",
+                "sec_value": "2"
+            },
+            {
+                "sec_name": "消化科",
+                "sec_value": "3"
+            },
+            {
+                "sec_name": "肝病科",
+                "sec_value": "4"
+            },
+            {
+                "sec_name": "内分泌科",
+                "sec_value": "5"
+            },
+            {
+                "sec_name": "肿瘤科",
+                "sec_value": "6"
+            },
+            {
+                "sec_name": "血液科",
+                "sec_value": "7"
+            },
+            {
+                "sec_name": "精神科",
+                "sec_value": "8"
+            },
+            {
+                "sec_name": "呼吸科",
+                "sec_value": "9"
+            },
+            {
+                "sec_name": "肾内科",
+                "sec_value": "10"
+            },
+            {
+                "sec_name": "风湿免疫科",
+                "sec_value": "11"
+            },
+            {
+                "sec_name": "感染科",
+                "sec_value": "12"
+            }
+        ]
+    },
+    {
+        "type_name": "外科",
+        "type_value": "8888",
+        "sub_category_list": [
+            {
+                "sec_name": "心血管内科",
+                "sec_value": "1"
+            },
+            {
+                "sec_name": "神经内科",
+                "sec_value": "2"
+            },
+            {
+                "sec_name": "消化科",
+                "sec_value": "3"
+            },
+            {
+                "sec_name": "肝病科",
+                "sec_value": "4"
+            },
+            {
+                "sec_name": "内分泌科",
+                "sec_value": "5"
+            },
+            {
+                "sec_name": "肿瘤科",
+                "sec_value": "6"
+            },
+            {
+                "sec_name": "血液科",
+                "sec_value": "7"
+            },
+            {
+                "sec_name": "精神科",
+                "sec_value": "8"
+            },
+            {
+                "sec_name": "呼吸科",
+                "sec_value": "9"
+            },
+            {
+                "sec_name": "肾内科",
+                "sec_value": "10"
+            },
+            {
+                "sec_name": "风湿免疫科",
+                "sec_value": "11"
+            },
+            {
+                "sec_name": "感染科",
+                "sec_value": "12"
+            }
+        ]
+    },
+    {
+        "type_name": "其他",
+        "type_value": "9999",
+        "sub_category_list": [
+            {
+                "sec_name": "心血管内科",
+                "sec_value": "1"
+            },
+            {
+                "sec_name": "神经内科",
+                "sec_value": "2"
+            },
+            {
+                "sec_name": "消化科",
+                "sec_value": "3"
+            },
+            {
+                "sec_name": "肝病科",
+                "sec_value": "4"
+            },
+            {
+                "sec_name": "内分泌科",
+                "sec_value": "5"
+            },
+            {
+                "sec_name": "肿瘤科",
+                "sec_value": "6"
+            },
+            {
+                "sec_name": "血液科",
+                "sec_value": "7"
+            },
+            {
+                "sec_name": "精神科",
+                "sec_value": "8"
+            },
+            {
+                "sec_name": "呼吸科",
+                "sec_value": "9"
+            },
+            {
+                "sec_name": "肾内科",
+                "sec_value": "10"
+            },
+            {
+                "sec_name": "风湿免疫科",
+                "sec_value": "11"
+            },
+            {
+                "sec_name": "感染科",
+                "sec_value": "12"
+            }
+        ]
+    }
+]
