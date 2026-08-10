@@ -39,8 +39,23 @@
 ### 前提条件
 
 - Python 3.10+
-- MongoDB（数据存储）
+- MongoDB（默认数据库）/ MySQL / PostgreSQL 任选其一
 - Redis（断点续爬缓存）
+
+### 数据库选择
+
+| 数据库 | 安装 | 适用场景 |
+|--------|------|---------|
+| MongoDB（默认） | 内置依赖 | 通用场景，结构灵活 |
+| MySQL | `pip install pymysql` | 关系型数据，已有 MySQL 环境 |
+| PostgreSQL | `pip install psycopg2-binary` | 高级查询，已有 PG 环境 |
+
+```yaml
+# jimmyspider.yaml — 切换数据库只需一行
+db_type: "mysql"           # mongodb | mysql | postgresql
+mysql_host: "127.0.0.1"    # MySQL 连接信息
+mysql_db: "jimmyspider"
+```
 
 ### 从源码安装
 
@@ -214,7 +229,19 @@ pro_my_site/           ← 这个目录名贯穿整个框架
 
 `JimmySpider` 在 `__init__` 中自动实例化所有组件，你的子类只需写 `run()`。
 
-### 3. Component 可替换
+### 3. 数据库自由切换
+
+```python
+# 方式一：构造函数传参
+MySpider(pro_path=..., db_type="mysql")
+
+# 方式二：配置文件 jimmyspider.yaml
+# db_type: "postgresql"
+```
+
+同一个 `save_result()` 自动适配 MongoDB / MySQL / PostgreSQL。
+
+### 4. 组件可替换
 
 所有组件都可以在子类中覆盖：
 
@@ -240,8 +267,17 @@ cp jimmyspider.yaml.example jimmyspider.yaml
 
 ```yaml
 # jimmyspider.yaml — 所有配置集中管理
+# 数据库（默认 MongoDB，也可选 mysql / postgresql）
+db_type: "mongodb"
 mongo_uri: "mongodb://localhost:27017/"
 mongo_db: "jimmyspider"
+
+# MySQL / PostgreSQL（db_type 切换后取消注释对应段）
+# mysql_host: "127.0.0.1"
+# mysql_db: "jimmyspider"
+# pg_host: "127.0.0.1"
+# pg_db: "jimmyspider"
+
 redis_host: "127.0.0.1"
 redis_port: 6379
 data_dir: "~/spider_files"
@@ -320,11 +356,13 @@ class Spider(JimmySpider):
 
 ## 📂 示例项目
 
-`examples/` 目录包含 **18 个实战爬虫示例**：
+`examples/` 目录包含 **20 个实战爬虫示例**：
 
 | 示例 | 来源站点 | 展示特性 |
 |------|---------|---------|
-| `hello_world/` | Hacker News | 入门示例：最小完整爬虫、HTML 解析 |
+| `hello_world/` | Hacker News | 入门示例：MongoDB 最小完整爬虫 |
+| `hello_mysql/` | Hacker News | 🆕 MySQL 数据库示例 |
+| `hello_postgresql/` | Hacker News | 🆕 PostgreSQL 数据库示例 |
 | `eastmoney_report/` | 东方财富 | 研报下载、分类翻页、Redis 断点 |
 | `state_council_policy/` | 国务院 | list+detail 分页、HTML 解析 |
 | `moj_regulations/` | 司法部 | JSON POST、字段映射、API 采集 |
