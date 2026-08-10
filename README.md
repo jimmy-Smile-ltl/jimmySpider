@@ -272,10 +272,11 @@ class Spider(JimmySpider):
 
 ## 📂 示例项目
 
-`examples/` 目录包含 **10 个实战爬虫示例**：
+`examples/` 目录包含 **13 个实战爬虫示例**：
 
 | 示例 | 来源站点 | 展示特性 |
 |------|---------|---------|
+| `hello_world/` | Hacker News | 入门示例：最小完整爬虫、HTML 解析 |
 | `eastmoney_report/` | 东方财富 | 研报下载、分类翻页、Redis 断点 |
 | `state_council_policy/` | 国务院 | list+detail 分页、HTML 解析 |
 | `moj_regulations/` | 司法部 | JSON POST、字段映射、API 采集 |
@@ -286,6 +287,8 @@ class Spider(JimmySpider):
 | `escholarship_org/` | eScholarship | curl_cffi、AWS WAF |
 | `pubmed_ncbi/` | PubMed | 日期分片、多阶段流水线 |
 | `oatd/` | OATD 学位论文 | AsyncRequestHandler、Cookie 刷新、代理轮换 |
+| `twse_taiwan/` | 台湾证交所 MOPS | 金融数据、JSON POST 分片、并发详情 |
+| `chinamoney/` | 中国货币网 | 信用评级、POST API 分页、断点续爬 |
 
 每个示例都有详细的模块文档字符串。完整说明见 [docs/examples.md](docs/examples.md)。
 
@@ -346,7 +349,7 @@ my_spider_project/
 | [docs/configuration.md](docs/configuration.md) | 所有环境变量详解 |
 | [docs/request_handlers.md](docs/request_handlers.md) | 请求处理器选择指南 |
 | [docs/proxy.md](docs/proxy.md) | 代理配置指南（隧道 + Clash） |
-| [docs/examples.md](docs/examples.md) | 10 个示例项目详解 |
+| [docs/examples.md](docs/examples.md) | 13 个示例项目详解 |
 
 ## 🤝 贡献
 
