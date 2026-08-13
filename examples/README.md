@@ -1,6 +1,6 @@
 # jimmySpider Examples
 
-This directory contains 27 real-world spider projects that demonstrate the jimmySpider framework in action.
+This directory contains 28 real-world spider projects that demonstrate the jimmySpider framework in action.
 
 ## Quick Navigation
 
@@ -27,6 +27,13 @@ This directory contains 27 real-world spider projects that demonstrate the jimmy
 | 19 | [arxiv_org/](arxiv_org/) | arXiv preprints | PostgreSQL bulk upsert, curl_cffi, 10-day window slicing |
 | 20 | [papercopilot/](papercopilot/) | Conference papers | AJAX batch endpoint reverse-engineering, header-aligned parsing |
 | 21 | [google_scholar/](google_scholar/) | Google Scholar authors | Search parsing, author profiles, cross-example pipeline |
+| 22 | [hello_mysql/](hello_mysql/) | Hacker News (MySQL) | Same as hello_world, `db_type="mysql"` |
+| 23 | [hello_postgresql/](hello_postgresql/) | Hacker News (PostgreSQL) | Same as hello_world, `db_type="postgresql"` |
+| 24 | [tech_news_flash/](tech_news_flash/) | Tech news (MySQL) | GBK pages, article-ID crawl, failure circuit-breaker |
+| 25 | [tiantian_fund/](tiantian_fund/) | Fund rankings + NAV (MySQL) | Dual-table MySQL, JS NAV parsing, CSV fallback |
+| 26 | [tech_literature/](tech_literature/) | Frontiers journals (MySQL) | 3-tier crawl: journals→API→details |
+| 27 | [robot_lab/](robot_lab/) | UC Berkeley BAIR blog (MySQL) | Pagination detection, async details |
+| 28 | [clash_proxy_pool/](clash_proxy_pool/) | Clash node pool (Docker) | mihomo container, health check, auto node switching |
 
 ## How to Use These Examples
 

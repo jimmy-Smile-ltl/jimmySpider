@@ -1,107 +1,39 @@
 # Example Projects
 
-The `examples/` directory contains 9 spider examples curated from real-world projects, showcasing how the jimmySpider framework is used in different scenarios.
+The `examples/` directory contains 28 spider examples curated from real-world projects, showcasing how the jimmySpider framework is used in different scenarios.
 
 ## Example List
 
-### 1. eastmoney_report — East Money Research Reports
-
-**Files**: `spider.py`  
-**Features demonstrated**:
-- `SingleRequestHandler` GET/POST requests
-- Multi-category pagination
-- Redis checkpoint/resume (page cache + error page set)
-- Report file downloads
-
-**Best for**: financial data, research report collection, paginated APIs
-
-### 2. state_council_policy — State Council Policies
-
-**Files**: `spider.py`  
-**Features demonstrated**:
-- Two-stage list+detail crawl pattern
-- ThreadPoolExecutor concurrent detail-page fetching
-- BeautifulSoup HTML field parsing
-- `HandleDatetime` date normalization
-
-**Best for**: government sites, policies and regulations, news lists
-
-### 3. moj_regulations — Ministry of Justice Regulations
-
-**Files**: `spider.py`  
-**Features demonstrated**:
-- JSON POST requests (with signed headers)
-- `safe_extract_json()` safe extraction of nested JSON
-- `rename_keys_inplace()` field mapping
-- Batched DB inserts + checkpoint page numbers
-
-**Best for**: API collection, JSON data parsing
-
-### 4. medlive_guide — Medical Guidelines
-
-**Files**: `spider.py`, `spider_type.py`  
-**Features demonstrated**:
-- Multi-level category tree traversal
-- Serialized category checkpoint cache (JSON)
-- Two modes: full crawl of a single category vs. traversal of all categories
-- Anti-bot on medical sites (dynamic cookies)
-
-**Best for**: sites with category tree structures, medical/academic content
-
-### 5. cicc_report — Broker Research Reports
-
-**Files**: `spider.py`  
-**Features demonstrated**:
-- `CurlRequestHandler` TLS fingerprint impersonation (chrome120)
-- Jiasule CDN cookie challenge solving
-- JS crypto context integration (`_load_cookie_js_ctx`)
-- Report PDF download + JSON metadata extraction
-
-**Best for**: Cloudflare/Jiasule-protected sites, scenarios needing TLS fingerprint impersonation
-
-### 6. unicamp_br — Brazilian University Repository
-
-**Files**: `spider_list_by_area.py`, `spider_list_by_year.py`, `spider_supplement_by_area.py`  
-**Features demonstrated**:
-- Multi-strategy parallel collection (by subject / by year / by supplementary subject)
-- Hierarchical JSON data loading
-- University repository paper metadata collection
-- Progress persistence + error retry
-
-**Best for**: university repositories, academic papers, multi-dimensional collection
-
-### 7. cuni_cz — Charles University
-
-**Files**: `spider_list.py`, `spider_detail.py`  
-**Features demonstrated**:
-- Complete list+detail pattern
-- `ThreadRequestHandler` multithreaded requests
-- Faculty list driven by JSON data
-- MongoDB batch upsert + deduplication
-
-**Best for**: university faculty/paper databases, cross-faculty collection
-
-### 8. escholarship_org — Academic Paper Repository
-
-**Files**: `spider_list.py`, `spider_detail.py`  
-**Features demonstrated**:
-- `CurlCffiAsyncRequestHandler` curl_cffi async
-- AWS WAF token handling
-- Paper metadata + attachment downloads
-- DOI deduplication + checkpoint recovery
-
-**Best for**: AWS WAF-protected sites, high-concurrency academic data collection
-
-### 9. pubmed_ncbi — PubMed
-
-**Files**: `spider_list.py`, `spider_detail.py`, `spider_50_to_jsonl.py`, `springer_down_txt_xm.py`  
-**Features demonstrated**:
-- Date-range splitting strategy (monthly shards to bypass API limits)
-- ThreadPoolExecutor multithreading (10 workers)
-- Multi-stage pipeline (list → detail → JSONL → PDF download)
-- PubMed API + Springer full-text downloads
-
-**Best for**: large academic databases, API sharding strategies, multi-stage data pipelines
+| # | Example | Site / Data source | DB | Key features |
+|---|---------|--------------------|-----|--------------|
+| 1 | `hello_world` | Hacker News | MongoDB | Minimal complete spider: `SingleRequestHandler` + `extractSoup` + `save_result` |
+| 2 | `hello_mysql` | Hacker News | MySQL | Same logic as hello_world, `db_type="mysql"` switches backend |
+| 3 | `hello_postgresql` | Hacker News | PostgreSQL | Same logic as hello_world, `db_type="postgresql"` switches backend |
+| 4 | `eastmoney_report` | East Money research reports | MongoDB | GET/POST multi-category pagination, Redis checkpoint, report downloads |
+| 5 | `state_council_policy` | State Council policies | MongoDB | Two-stage list+detail, ThreadPoolExecutor concurrency, `HandleDatetime` |
+| 6 | `moj_regulations` | Ministry of Justice regulations | MongoDB | JSON POST with signed headers, `safe_extract_json`, field mapping |
+| 7 | `medlive_guide` | Medlive medical guidelines | MongoDB | Multi-level category tree, serialized category checkpoints, dynamic cookies |
+| 8 | `cicc_report` | CICC research reports | MongoDB | Jiasule CDN cookie challenge via JS reverse (execjs), PDF downloads |
+| 9 | `unicamp_br` | University of Campinas repository | MongoDB | Multi-strategy collection (area/year/supplement) |
+| 10 | `cuni_cz` | Charles University | MongoDB | list+detail, `ThreadRequestHandler`, batch upsert + dedup |
+| 11 | `escholarship_org` | eScholarship papers | MongoDB | `CurlCffiAsyncRequestHandler`, AWS WAF token, DOI dedup |
+| 12 | `pubmed_ncbi` | PubMed | MongoDB | Monthly date sharding, multi-stage pipeline (list → detail → JSONL → PDF) |
+| 13 | `oatd` | OATD theses | MongoDB | `AsyncRequestHandler` concurrency, Cloudflare Turnstile CDP bypass, cookie refresh |
+| 14 | `twse_taiwan` | Taiwan TWSE MOPS | MongoDB | Financial announcements, slicing by ROC year × market, calendar conversion |
+| 15 | `chinamoney` | China Money Network | MongoDB | Credit ratings, POST pagination (year × page), PDF link construction |
+| 16 | `naver_research` | Naver research reports (Korean) | MongoDB | Korean page parsing, custom parser routing, Korean date normalization |
+| 17 | `yaozh_pharma` | Yaozh pharma database | MongoDB | Login-session site, pagination from HTML data attributes, checkpoint |
+| 18 | `medsci` | Medsci medical guidelines | MongoDB | Category-API-driven, captcha-aware rate limiting, category JSON checkpoints |
+| 19 | `gspublishing` | Goldman Sachs reports | MongoDB | Complex JSON POST search, ms-timestamp formatting, raw_data retention |
+| 20 | `boc_fimarkets` | Bank of China financial markets | MongoDB | list+detail, encoding detection (GBK/UTF-8), attachment-per-record |
+| 21 | `arxiv_org` | arXiv | PostgreSQL | `CurlRequestHandler` TLS impersonation + `ThreadRequestHandler`, 10-day window slicing, PG upsert |
+| 22 | `papercopilot` | Paper Copilot conference papers | PostgreSQL | AJAX batch endpoint reverse-engineering, header-aligned parsing, cross-example reuse |
+| 23 | `google_scholar` | Google Scholar | PostgreSQL | 4-file pipeline: title search → author profiles → collaborator expansion |
+| 24 | `tech_news_flash` | Tech news flash (citreport.com) | MySQL | GBK pages, article-ID-driven crawl, MySQL + Redis checkpoint |
+| 25 | `tiantian_fund` | Tiantian Fund (fund.eastmoney.com) | MySQL | Ranking pagination + NAV curve JS parsing, dual-table MySQL + CSV fallback |
+| 26 | `tech_literature` | Frontiers tech literature | MySQL | Journals → search API → detail concurrency, structured parsing, journal JSON cache |
+| 27 | `robot_lab` | UC Berkeley BAIR blog | MySQL | Blog pagination + detail concurrency, body/author/keyword extraction |
+| 28 | `clash_proxy_pool` | Any site via Clash proxy pool | MongoDB | `ClashManager` health checks, auto node switching on download cap/403, docker-compose |
 
 ## Running the Examples
 
@@ -110,9 +42,10 @@ The `examples/` directory contains 9 spider examples curated from real-world pro
 pip install -e .
 
 # Make sure MongoDB and Redis are running locally
+# (MySQL / PostgreSQL examples also need their database running)
 
-# Run an example (state_council_policy in this case)
-cd examples/state_council_policy
+# Run an example (hello_world in this case)
+cd examples/hello_world
 python spider.py
 ```
 
@@ -120,26 +53,48 @@ python spider.py
 
 | What you want to do | Which example to look at |
 |---------------------|--------------------------|
-| Simple site, quick start | `eastmoney_report` |
+| Quick start with the framework | `hello_world` |
+| Compare database backends (MySQL / PostgreSQL) | `hello_mysql`, `hello_postgresql` |
+| Simple site, paginated list | `eastmoney_report` |
 | Government site, paginated list | `state_council_policy` |
 | API JSON collection | `moj_regulations` |
 | Site with category tree structure | `medlive_guide` |
-| Cloudflare / TLS detection | `cicc_report` |
+| Jiasule CDN / JS reverse | `cicc_report` |
 | University papers, multi-dimensional | `unicamp_br` |
 | University data, list+detail | `cuni_cz` |
 | AWS WAF / high concurrency | `escholarship_org` |
 | Large database, sharding strategy | `pubmed_ncbi` |
+| Cloudflare + dynamic cookies | `oatd` |
+| Financial data (announcements/ratings/reports) | `twse_taiwan`, `chinamoney`, `gspublishing`, `boc_fimarkets`, `tiantian_fund` |
+| International sites (Korean pages) | `naver_research` |
+| Medical/pharma databases | `yaozh_pharma`, `medsci` |
+| Academic preprints | `arxiv_org` |
+| Scholar networks / cross-example pipeline | `papercopilot`, `google_scholar` |
+| News sites | `tech_news_flash` |
+| Journal literature | `tech_literature` |
+| Lab blogs | `robot_lab` |
+| Proxy pool / node switching | `clash_proxy_pool` |
 
 ## Picking an Example by Request Handler
 
 | Handler | Examples |
 |---------|----------|
-| `SingleRequestHandler` | eastmoney_report, state_council_policy, moj_regulations |
-| `AsyncRequestHandler` | — |
-| `ThreadRequestHandler` | cuni_cz, pubmed_ncbi |
-| `CurlRequestHandler` | cicc_report |
+| `SingleRequestHandler` | hello_world, hello_mysql, hello_postgresql, eastmoney_report, state_council_policy, moj_regulations, medlive_guide, cicc_report, unicamp_br, twse_taiwan, chinamoney, naver_research, yaozh_pharma, medsci, gspublishing, boc_fimarkets, papercopilot, tech_news_flash, tech_literature, robot_lab, clash_proxy_pool |
+| `AsyncRequestHandler` | oatd |
+| `ThreadRequestHandler` | cuni_cz, pubmed_ncbi, arxiv_org |
+| `CurlRequestHandler` | oatd (cookie_flush scenario), arxiv_org, google_scholar |
 | `CurlCffiThreadRequestHandler` | — |
 | `CurlCffiAsyncRequestHandler` | escholarship_org |
+
+## Picking an Example by Database Backend
+
+| Database | Examples |
+|----------|----------|
+| MongoDB (default) | hello_world, eastmoney_report, state_council_policy, moj_regulations, medlive_guide, cicc_report, unicamp_br, cuni_cz, escholarship_org, pubmed_ncbi, oatd, twse_taiwan, chinamoney, naver_research, yaozh_pharma, medsci, gspublishing, boc_fimarkets, clash_proxy_pool |
+| MySQL | hello_mysql, tech_news_flash, tiantian_fund, tech_literature, robot_lab |
+| PostgreSQL | hello_postgresql, arxiv_org, papercopilot, google_scholar |
+
+> Switch backends via the `db_type` constructor argument or `db_type` in `jimmyspider.yaml` (default: mongodb). Table schemas are created automatically by the corresponding handler.
 
 ## Writing Your Own Spider
 
