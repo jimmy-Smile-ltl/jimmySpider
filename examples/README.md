@@ -41,12 +41,14 @@ This directory contains 28 real-world spider projects that demonstrate the jimmy
 
 Find the example that most closely matches your target website type:
 
-- **Financial/API data** → eastmoney_report, moj_regulations, gspublishing, boc_fimarkets, twse_taiwan, chinamoney
-- **Government/news sites** → state_council_policy, boc_fimarkets
-- **Academic/university** → unicamp_br, cuni_cz, escholarship_org, pubmed_ncbi, naver_research, arxiv_org, papercopilot, google_scholar
+- **Financial/API data** → eastmoney_report, moj_regulations, gspublishing, boc_fimarkets, twse_taiwan, chinamoney, tiantian_fund
+- **Government/news sites** → state_council_policy, boc_fimarkets, tech_news_flash
+- **Academic/university** → unicamp_br, cuni_cz, escholarship_org, pubmed_ncbi, oatd, naver_research, arxiv_org, papercopilot, google_scholar, tech_literature, robot_lab
 - **Medical/health** → medlive_guide, medsci, yaozh_pharma
-- **International/non-Chinese sites** → naver_research, gspublishing, unicamp_br, cuni_cz, escholarship_org
-- **Cloudflare-protected** → cicc_report, escholarship_org
+- **International/non-Chinese sites** → naver_research, gspublishing, unicamp_br, cuni_cz, escholarship_org, oatd, arxiv_org, google_scholar, robot_lab
+- **Cloudflare/CDN-protected** → cicc_report (Jiasule), escholarship_org, oatd
+- **Database backend demos** → hello_mysql, hello_postgresql (switching), tech_news_flash, tiantian_fund, tech_literature, robot_lab (MySQL), arxiv_org, papercopilot, google_scholar (PostgreSQL)
+- **Proxy pool / node switching** → clash_proxy_pool
 
 ### 2. Read the module docstring
 
@@ -107,10 +109,13 @@ spider_supplement.py →  fill in missing items
 
 | If you want to learn about... | Look at... |
 |------------------------------|------------|
-| `SingleRequestHandler` usage | eastmoney_report, state_council_policy, moj_regulations, naver_research, yaozh_pharma, medsci, gspublishing, boc_fimarkets |
-| `ThreadRequestHandler` usage | cuni_cz, pubmed_ncbi |
-| `CurlRequestHandler` usage | cicc_report, arxiv_org, google_scholar |
-| `PostgreSQLHandler` batch upsert | arxiv_org, papercopilot, google_scholar |
+| `SingleRequestHandler` usage | hello_world, hello_mysql, hello_postgresql, eastmoney_report, state_council_policy, moj_regulations, medlive_guide, cicc_report, unicamp_br, naver_research, yaozh_pharma, medsci, gspublishing, boc_fimarkets, papercopilot, tech_news_flash, tech_literature, robot_lab, clash_proxy_pool |
+| `ThreadRequestHandler` usage | cuni_cz, pubmed_ncbi, arxiv_org |
+| `CurlRequestHandler` usage | arxiv_org, google_scholar |
+| `MySQLHandler` batch upsert | hello_mysql, tech_news_flash, tiantian_fund, tech_literature, robot_lab |
+| `PostgreSQLHandler` batch upsert | hello_postgresql, arxiv_org, papercopilot, google_scholar |
+| `db_type` backend switching | hello_mysql, hello_postgresql |
+| `ClashManager` node switching | clash_proxy_pool |
 | AJAX batch endpoint reverse-engineering | papercopilot |
 | Cross-example pipeline (sys.path reuse) | papercopilot, google_scholar |
 | `CurlCffiAsyncRequestHandler` usage | escholarship_org |
@@ -125,7 +130,7 @@ spider_supplement.py →  fill in missing items
 | `rename_keys_inplace` field mapping | moj_regulations |
 | `FileDownloader` file download | eastmoney_report, cicc_report |
 | `generate_string_id` / `generate_doi_id` | pubmed_ncbi, escholarship_org |
-| Date-range splitting strategy | pubmed_ncbi |
+| Date-range splitting strategy | pubmed_ncbi, arxiv_org |
 | Multi-thread detail concurrency | state_council_policy, pubmed_ncbi |
 
 ## Need Help?
