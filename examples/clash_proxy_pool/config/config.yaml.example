@@ -1,0 +1,68 @@
+# Clash (mihomo) 配置模板
+#
+# ⚠️ 重要：本文件是脱敏模板，所有节点信息均为占位符。
+# 实际使用步骤：
+#   1. 从你的代理服务商导出订阅链接
+#   2. 在 Clash 客户端（或在线转换工具）中转换为 mihomo 配置
+#   3. 保存为 config.yaml 放到本目录
+#   4. 确保 secret 与 .env 中 CLASH_SECRET 一致
+#
+# 以下配置结构可直接使用，只需替换 proxies 部分为真实订阅节点。
+
+# ---- 基础设置 ----
+mixed-port: 7890
+allow-lan: false          # 生产环境建议 false，仅容器内部使用
+bind-address: '*'
+mode: rule
+log-level: info
+external-controller: '0.0.0.0:9090'
+secret: "your-secret-here"    # ⚠️ 改成强密码，与 .env 一致
+ipv6: false
+
+dns:
+    enable: true
+    ipv6: false
+    enhanced-mode: fake-ip
+    fake-ip-range: 198.18.0.1/16
+    default-nameserver: [223.5.5.5, 119.29.29.29]
+    nameserver: [223.5.5.5, 119.29.29.29]
+
+# ---- 代理节点（占位符示例，替换为你订阅的真实节点）----
+proxies:
+    # VLESS + WebSocket 示例
+    - name: '🇯🇵日本节点示例'
+      type: vless
+      server: your-server.example.com
+      port: 443
+      uuid: your-uuid-here
+      udp: true
+      tls: true
+      skip-cert-verify: false
+      client-fingerprint: chrome
+      network: ws
+      ws-opts:
+        path: /your-path
+        headers: { Host: your-server.example.com }
+
+    # Hysteria2 示例
+    - name: '🇭🇰香港节点示例'
+      type: hysteria2
+      server: your-hy2-server.example.com
+      port: 35000
+      ports: 35000-39000
+      udp: true
+      skip-cert-verify: true
+      sni: www.apple.com
+      password: your-password-here
+
+# ---- 策略组：爬虫通过 API 在组内切换节点 ----
+proxy-groups:
+    - name: '🚀节点选择'
+      type: select
+      proxies:
+          - '🇯🇵日本节点示例'
+          - '🇭🇰香港节点示例'
+
+# ---- 规则：全部走代理（爬虫场景常用）----
+rules:
+    - MATCH,🚀节点选择

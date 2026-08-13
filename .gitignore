@@ -46,3 +46,8 @@ Thumbs.db
 .env
 .env.local
 *.pem
+
+# Clash real subscription configs (contains credentials)
+examples/clash_proxy_pool/config/config.yaml
+examples/clash_proxy_pool/.env
+clash_node_state.json
