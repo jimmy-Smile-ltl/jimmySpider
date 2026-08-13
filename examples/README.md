@@ -1,6 +1,6 @@
 # jimmySpider Examples
 
-This directory contains 18 real-world spider projects that demonstrate the jimmySpider framework in action.
+This directory contains 27 real-world spider projects that demonstrate the jimmySpider framework in action.
 
 ## Quick Navigation
 
@@ -24,6 +24,9 @@ This directory contains 18 real-world spider projects that demonstrate the jimmy
 | 16 | [hello_world/](hello_world/) | Hacker News | Minimal complete spider, `extractSoup` HTML parsing |
 | 17 | [twse_taiwan/](twse_taiwan/) | Taiwan TWSE MOPS | Financial announcements, JSON POST slicing |
 | 18 | [chinamoney/](chinamoney/) | China Money Network | Credit ratings, POST pagination, checkpoint |
+| 19 | [arxiv_org/](arxiv_org/) | arXiv preprints | PostgreSQL bulk upsert, curl_cffi, 10-day window slicing |
+| 20 | [papercopilot/](papercopilot/) | Conference papers | AJAX batch endpoint reverse-engineering, header-aligned parsing |
+| 21 | [google_scholar/](google_scholar/) | Google Scholar authors | Search parsing, author profiles, cross-example pipeline |
 
 ## How to Use These Examples
 
@@ -33,7 +36,7 @@ Find the example that most closely matches your target website type:
 
 - **Financial/API data** → eastmoney_report, moj_regulations, gspublishing, boc_fimarkets, twse_taiwan, chinamoney
 - **Government/news sites** → state_council_policy, boc_fimarkets
-- **Academic/university** → unicamp_br, cuni_cz, escholarship_org, pubmed_ncbi, naver_research
+- **Academic/university** → unicamp_br, cuni_cz, escholarship_org, pubmed_ncbi, naver_research, arxiv_org, papercopilot, google_scholar
 - **Medical/health** → medlive_guide, medsci, yaozh_pharma
 - **International/non-Chinese sites** → naver_research, gspublishing, unicamp_br, cuni_cz, escholarship_org
 - **Cloudflare-protected** → cicc_report, escholarship_org
@@ -99,7 +102,10 @@ spider_supplement.py →  fill in missing items
 |------------------------------|------------|
 | `SingleRequestHandler` usage | eastmoney_report, state_council_policy, moj_regulations, naver_research, yaozh_pharma, medsci, gspublishing, boc_fimarkets |
 | `ThreadRequestHandler` usage | cuni_cz, pubmed_ncbi |
-| `CurlRequestHandler` usage | cicc_report |
+| `CurlRequestHandler` usage | cicc_report, arxiv_org, google_scholar |
+| `PostgreSQLHandler` batch upsert | arxiv_org, papercopilot, google_scholar |
+| AJAX batch endpoint reverse-engineering | papercopilot |
+| Cross-example pipeline (sys.path reuse) | papercopilot, google_scholar |
 | `CurlCffiAsyncRequestHandler` usage | escholarship_org |
 | `AsyncRequestHandler` usage | oatd |
 | Cookie refresh via headless browser (Cloudflare) | oatd |

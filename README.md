@@ -356,7 +356,7 @@ class Spider(JimmySpider):
 
 ## 📂 示例项目
 
-`examples/` 目录包含 **20 个实战爬虫示例**：
+`examples/` 目录包含 **27 个实战爬虫示例**：
 
 | 示例 | 来源站点 | 展示特性 |
 |------|---------|---------|
@@ -380,6 +380,13 @@ class Spider(JimmySpider):
 | `medsci/` | 梅斯医学 | 分类接口动态遍历、验证码风控提示 |
 | `gspublishing/` | 高盛研报 | 复杂 JSON POST、时间戳格式化、raw_data 保留 |
 | `boc_fimarkets/` | 中国银行 | list+detail、附件拆分入库、编码自适应 |
+| `arxiv_org/` | arXiv | curl_cffi、10 天分片、PG 批量 upsert |
+| `papercopilot/` | Paper Copilot | AJAX 批量接口逆向、表头对齐解析 |
+| `google_scholar/` | Google Scholar | 按标题搜论文、作者主页抓取、合作者扩散流水线 |
+| `tech_news_flash/` | 科技快报网 | MySQL 示例、GBK 编码、连续失败熔断 |
+| `tiantian_fund/` | 天天基金 | 基金列表+净值曲线、双表 MySQL、线程池详情 |
+| `tech_literature/` | Frontiers 科技文献 | 三层爬取（期刊→文章→详情）、MySQL |
+| `robot_lab/` | UC Berkeley BAIR | 分页按钮检测、异步详情、MySQL |
 
 每个示例都有详细的模块文档字符串。完整说明见 [docs/examples.md](docs/examples.md)。
 
