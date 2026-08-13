@@ -356,7 +356,7 @@ class Spider(JimmySpider):
 
 ## 📂 示例项目
 
-`examples/` 目录包含 **27 个实战爬虫示例**：
+`examples/` 目录包含 **28 个实战爬虫示例**：
 
 | 示例 | 来源站点 | 展示特性 |
 |------|---------|---------|
@@ -387,6 +387,7 @@ class Spider(JimmySpider):
 | `tiantian_fund/` | 天天基金 | 基金列表+净值曲线、双表 MySQL、线程池详情 |
 | `tech_literature/` | Frontiers 科技文献 | 三层爬取（期刊→文章→详情）、MySQL |
 | `robot_lab/` | UC Berkeley BAIR | 分页按钮检测、异步详情、MySQL |
+| `clash_proxy_pool/` | Clash 节点池 | Docker mihomo + 节点健康检测 + 自动切换 |
 
 每个示例都有详细的模块文档字符串。完整说明见 [docs/examples.md](docs/examples.md)。
 
