@@ -10,6 +10,12 @@ jimmySpider - Python 爬虫框架
 - 日志系统（控制台 + 按天轮转文件）
 - HTML 清洗与归档
 - 日期智能解析
+
+分布式子系统（可选，按需导入）：
+- jimmyspider.mq          消息队列（Redis/Kafka/RabbitMQ 统一接口）
+- jimmyspider.scheduler   调度引擎（Scrapy 式 / AioSpider 式）
+- jimmyspider.parser      智能解析（5 层成本级联 + LLM 兜底）
+- jimmyspider.distributed 分布式代理 / 存储 / 监控
 """
 
 from jimmyspider.spider import JimmySpider
@@ -21,6 +27,8 @@ from jimmyspider.request import (
     CurlRequestHandler,
     CurlCffiThreadRequestHandler,
     CurlCffiAsyncRequestHandler,
+    RFPDupeFilter,
+    DomainRateLimiter,
 )
 from jimmyspider.mongo import HandleMongoDB
 from jimmyspider.file import FileDownloader
@@ -42,6 +50,8 @@ __all__ = [
     "CurlRequestHandler",
     "CurlCffiThreadRequestHandler",
     "CurlCffiAsyncRequestHandler",
+    "RFPDupeFilter",
+    "DomainRateLimiter",
     "HandleMongoDB",
     "FileDownloader",
     "LogPrint",

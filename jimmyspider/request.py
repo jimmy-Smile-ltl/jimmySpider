@@ -1,7 +1,10 @@
 import asyncio
+import hashlib
+import logging
 import os
 import random
 import sys
+import threading
 import time
 from typing import List, Dict, Optional
 import functools
@@ -713,3 +716,139 @@ class CurlCffiAsyncRequestHandler:
         """
         results = asyncio.run(self._fetch_all(url_list, **kwargs))
         return results
+
+# ---------------------------------------------------------------------------
+# --- 调度器工具: 请求去重 + 域级速率限制 (迁移自 scheduler 研究) ---
+# --- 源: spider research/爬虫架构/scheduler/scrapy_sched/scheduler.py   ---
+# ---     spider research/爬虫架构/scheduler/aiospider_sched/scheduler.py ---
+# ---------------------------------------------------------------------------
+
+class RFPDupeFilter:
+    """
+    请求指纹去重器 (Scrapy RFPDupeFilter 风格)
+
+    - 对每个请求计算 SHA1 指纹 (url + method + body)
+    - 已见过的指纹被过滤 (request_seen 返回 True)
+    - 默认容量 100000，满时清理一半，防止内存溢出
+
+    用法:
+        dupe = RFPDupeFilter()
+        if not dupe.request_seen(url):
+            # 处理新请求
+        # 也兼容 duck-typed 请求对象 (req.url / req.method / req.body)
+
+    迁移说明: 原实现接收 scheduler 的 Request 对象，这里改为接收 url 字符串，
+    同时保留对带 url/method/body 属性的对象的兼容。
+    """
+
+    def __init__(self, max_size: int = 100000):
+        self.fingerprints: set = set()
+        self.max_size = max_size
+
+    def fingerprint(self, url: str, method: str = "GET", body=None) -> str:
+        """计算请求指纹 (SHA1 of url + method + body)"""
+        fp = hashlib.sha1()
+        fp.update(url.encode("utf-8"))
+        fp.update(method.encode("utf-8"))
+        # body 也参与去重
+        if body:
+            if isinstance(body, str):
+                body = body.encode("utf-8")
+            fp.update(body)
+        return fp.hexdigest()
+
+    def request_seen(self, url, method: str = "GET", body=None) -> bool:
+        """检查请求是否已见过（已见过返回 True）"""
+        if not isinstance(url, str):
+            # 兼容 duck-typed 请求对象: request_seen(req)
+            method = getattr(url, "method", method)
+            body = getattr(url, "body", body)
+            url = url.url
+        fp = self.fingerprint(url, method, body)
+        if fp in self.fingerprints:
+            return True
+        # 防止内存溢出: 满时清理一半
+        if len(self.fingerprints) >= self.max_size:
+            logging.getLogger(__name__).warning(f"去重集已满({self.max_size})，清理一半")
+            to_remove = list(self.fingerprints)[:len(self.fingerprints) // 2]
+            for r in to_remove:
+                self.fingerprints.discard(r)
+        self.fingerprints.add(fp)
+        return False
+
+    def clear(self):
+        self.fingerprints.clear()
+
+    def __len__(self):
+        return len(self.fingerprints)
+
+
+class DomainRateLimiter:
+    """
+    域级速率限制 (每域名独立锁 + 最后请求时间戳)
+
+    - wait():        同步版本 (threading.Lock 实现，线程安全)
+    - wait_async():  异步版本 (asyncio.Lock 实现，不阻塞事件循环)
+    - 每域名独立计时，互不影响；同步/异步共享同一计时表
+
+    用法:
+        limiter = DomainRateLimiter(default_delay=1.0)
+
+        # 同步
+        limiter.wait(url)
+        resp = requests.get(url)
+
+        # 异步
+        await limiter.wait_async(url)
+        resp = await session.get(url)
+
+    迁移说明: 原实现 (aiospider_sched) 仅提供 async 版，参数为 Request 对象；
+    这里改为 url 字符串 + 新增 threading 同步版。
+    """
+
+    def __init__(self, default_delay: float = 1.0):
+        self.default_delay = default_delay
+        # 同步: 域名 → threading.Lock; _meta_lock 保护字典结构
+        self._last_request: Dict[str, float] = {}
+        self._meta_lock = threading.Lock()
+        self._domain_locks: Dict[str, threading.Lock] = {}
+        # 异步: 域名 → asyncio.Lock
+        self._async_locks: Dict[str, asyncio.Lock] = {}
+
+    @staticmethod
+    def _get_domain(url) -> str:
+        """从 URL 提取域名 (兼容带 .url 属性的请求对象)"""
+        from urllib.parse import urlparse
+        if not isinstance(url, str):
+            url = url.url
+        return urlparse(url).netloc or "unknown"
+
+    def wait(self, url, delay: float = None) -> None:
+        """同步等待: 距上次同域名请求不足 delay 秒则休眠补齐"""
+        domain = self._get_domain(url)
+        d = delay if delay is not None else self.default_delay
+        with self._meta_lock:
+            lock = self._domain_locks.setdefault(domain, threading.Lock())
+        with lock:
+            now = time.time()
+            last = self._last_request.get(domain, 0)
+            wait_time = d - (now - last)
+            if wait_time > 0:
+                time.sleep(wait_time)
+            self._last_request[domain] = time.time()
+
+    async def wait_async(self, url, delay: float = None) -> None:
+        """异步等待: 距上次同域名请求不足 delay 秒则 asyncio.sleep 补齐"""
+        domain = self._get_domain(url)
+        d = delay if delay is not None else self.default_delay
+        lock = self._async_locks.get(domain)
+        if lock is None:
+            lock = asyncio.Lock()
+            self._async_locks[domain] = lock
+        async with lock:
+            now = time.time()
+            last = self._last_request.get(domain, 0)
+            wait_time = d - (now - last)
+            if wait_time > 0:
+                await asyncio.sleep(wait_time)
+            self._last_request[domain] = time.time()

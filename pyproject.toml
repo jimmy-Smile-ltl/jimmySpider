@@ -52,8 +52,20 @@ mysql = [
 postgresql = [
     "psycopg2-binary>=2.9",
 ]
+mq = [
+    "kafka-python>=2.0",
+    "pika>=1.3",
+]
+distributed = [
+    "motor>=3.3",
+    "asyncpg>=0.29",
+    "aiomysql>=0.2",
+    "elasticsearch>=8.0",
+    "psutil>=5.9",
+    "aiohttp>=3.8",
+]
 all = [
-    "jimmyspider[dev,yaml,mysql,postgresql]",
+    "jimmyspider[dev,yaml,mysql,postgresql,mq,distributed]",
 ]
 
 [project.urls]
