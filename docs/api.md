@@ -399,3 +399,271 @@ print(cfg.DATA_DIR)
 ```
 
 所有环境变量见 [配置指南](configuration.md)。
+
+---
+
+## RFPDupeFilter（请求去重器）
+
+Scrapy RFPDupeFilter 风格的请求去重器。对每个请求计算 SHA1 指纹（url + method + body），已见过的请求被过滤。导出在顶层，定义在 `jimmyspider.request`。
+
+```python
+from jimmyspider import RFPDupeFilter
+
+dupe = RFPDupeFilter(max_size=100000)
+if not dupe.request_seen("https://example.com/page/1"):
+    # 处理新请求
+```
+
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| `max_size` | `100000` | 去重集最大容量，满时自动清理一半防内存溢出 |
+
+**`request_seen(url, method="GET", body=None) -> bool`**
+
+已见过返回 `True`（应过滤），否则记录指纹并返回 `False`。除 URL 字符串外，也兼容带 `url`/`method`/`body` 属性的请求对象。
+
+**`fingerprint(url, method="GET", body=None) -> str`** — 计算 SHA1 指纹。
+
+**`clear()`** — 清空去重集。
+
+---
+
+## DomainRateLimiter（域级速率限制）
+
+每个域名独立计时 + 锁的限速器，同步/异步版本共享同一计时表，互不影响。
+
+```python
+from jimmyspider import DomainRateLimiter
+
+limiter = DomainRateLimiter(default_delay=1.0)
+
+# 同步
+limiter.wait(url)
+resp = requests.get(url)
+
+# 异步
+await limiter.wait_async(url)
+resp = await session.get(url)
+```
+
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| `default_delay` | `1.0` | 同一域名两次请求的最小间隔（秒） |
+
+**`wait(url, delay=None)`** — 同步等待（`threading.Lock` 实现，线程安全），距上次同域名请求不足 `delay` 秒则休眠补齐。
+
+**`wait_async(url, delay=None)`** — 异步等待（`asyncio.Lock` 实现，不阻塞事件循环）。
+
+---
+
+## 消息队列 jimmyspider.mq
+
+三种消息队列（Redis / Kafka / RabbitMQ）的统一封装，专为爬虫任务分发设计。所有实现共享统一接口，切换 MQ 只需修改 import 语句。
+
+### TaskMessage（统一消息体）
+
+```python
+from jimmyspider.mq import TaskMessage
+
+task = TaskMessage(
+    task_id="url_001",                  # 任务唯一标识
+    task_type="crawl_detail",           # crawl_list / crawl_detail / download_file
+    payload={"url": "https://..."},     # 任务负载
+    priority=5,                         # 优先级 0-9，数字越大越优先
+    max_retries=3,                      # 最大重试次数
+)
+task.to_json()             # 序列化为 JSON 字符串
+TaskMessage.from_json(s)   # 反序列化
+task.can_retry()           # 是否还可重试
+task.increment_retry()     # 重试计数 +1
+```
+
+| 字段 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `task_id` | `str` | - | 任务唯一标识 |
+| `task_type` | `str` | - | `crawl_list` / `crawl_detail` / `download_file` |
+| `payload` | `dict` | `{}` | 任务负载（URL、参数等） |
+| `priority` | `int` | `0` | 优先级 0-9，越大越优先 |
+| `max_retries` | `int` | `3` | 最大重试次数 |
+| `retry_count` | `int` | `0` | 当前重试次数 |
+| `created_at` | `float` | 当前时间 | 创建时间戳 |
+| `metadata` | `dict` | `{}` | 额外元数据 |
+
+### RedisProducer / RedisConsumer（默认实现）
+
+```python
+from jimmyspider.mq import RedisProducer, RedisConsumer
+
+producer = RedisProducer(mode="stream")   # "list" 或 "stream"
+producer.send("spider_tasks", task)
+
+def handle(task: TaskMessage) -> bool:    # 返回 True = ACK，False = NACK 进重试链
+    ...
+
+consumer = RedisConsumer(mode="stream",
+                         consumer_group="workers", consumer_name="worker_1")
+consumer.consume("spider_tasks", handle)
+```
+
+- `RedisProducer(host, port, db, password, mode="list")` — `mode="list"`（LPUSH FIFO）或 `mode="stream"`（XADD + 消费者组）；连接参数默认读取全局配置（REDIS_HOST / REDIS_PORT / REDIS_DB / REDIS_PASSWORD）
+- `RedisConsumer(host, port, db, password, mode="list", consumer_group, consumer_name, block_ms=5000, max_retries=3, dead_letter_suffix="_dead")` — `mode` 支持 `"list"` / `"stream"` / `"priority"`（ZSET 按优先级消费）；失败指数退避重试，超限进入 `{topic}_dead` 死信队列
+
+### 其他实现（可选）
+
+- `KafkaProducer(bootstrap_servers=[...])` — 分区并行、gzip/snappy/lz4 压缩、key 分区保序
+- `RabbitMQProducer(host="localhost", port=5672, username, password, exchange_name, exchange_type)` — Exchange 灵活路由、消息持久化、TTL/死信延迟队列
+
+完整文档见 [jimmyspider/mq/docs/message_queue.md](../jimmyspider/mq/docs/message_queue.md)。
+
+---
+
+## 调度引擎 jimmyspider.scheduler
+
+Scrapy / AioScrapy 双风格调度器，均遵循五层架构（Engine → Scheduler → Downloader → Middleware → Spider）。
+
+```python
+from jimmyspider.scheduler import BaseSpider, Request, ScrapyEngine
+
+class MySpider(BaseSpider):
+    name = "my_spider"
+
+    def start_requests(self):
+        yield Request(url="https://example.com")
+
+    def parse(self, response):
+        yield {"title": response.text[:50]}
+
+ScrapyEngine(spider=MySpider(), concurrent_requests=16).run()
+```
+
+| 组件 | 说明 |
+|------|------|
+| `Request` | 爬取请求：`url` / `method` / `headers` / `body` / `meta` / `callback` / `dont_filter` / `priority` |
+| `Response` | 爬取响应：`url` / `status` / `text` / `body` / `request` / `meta`，附带 `xpath()` / `css()` |
+| `BaseSpider` | 爬虫基类：实现 `start_requests()` 与 `parse()` 即可 |
+
+**ScrapyEngine vs AioSpiderEngine**
+
+| | `ScrapyEngine` | `AioSpiderEngine` |
+|------|----------------|-------------------|
+| 模型 | 同步回调链 + 线程池（requests） | asyncio 协程 + 信号量（aiohttp） |
+| 调用 | `ScrapyEngine(spider=..., concurrent_requests=16).run()` | `asyncio.run(AioSpiderEngine(spider=..., concurrent_requests=100).run())` |
+| 适用 | 兼容 Scrapy 习惯、中小并发 | 高并发场景，实测吞吐高约 2.4 倍 |
+
+完整文档见 [jimmyspider/scheduler/docs/scheduler.md](../jimmyspider/scheduler/docs/scheduler.md)。
+
+---
+
+## 智能解析 jimmyspider.parser
+
+5 层成本级联提取引擎：已知定位器 → 语义选择器 → JSON-LD/Meta → DOM 分析 → LLM 兜底。命中即返回，LLM 仅在低层全部失败时调用。基于 1035 个真实日报站点统计优化。
+
+### TitleExtractor（中文标题提取器）
+
+```python
+from jimmyspider.parser import TitleExtractor
+
+extractor = TitleExtractor()
+result = extractor.extract(html, url="https://example.com/article/1")
+
+result.value           # 标题文本
+result.method          # selector / semantic / meta / dom / llm
+result.confidence      # 置信度 0.0 ~ 1.0
+result.selector_used   # 命中的定位器，如 "h1"
+```
+
+成功提取后自动按域名缓存定位器，同站点后续页面 0 token 成本复用。
+
+### ContentExtractor（正文提取器）
+
+```python
+from jimmyspider.parser import ContentExtractor
+
+result = ContentExtractor().extract(html, url)  # 返回 ExtractionResult
+```
+
+与 `TitleExtractor` 同签名：`extract(html, url="", known_selector="") -> ExtractionResult`。语义选择器 + 文本密度算法（Modified Readability）+ 云展网 `#ozoom` 特殊处理。
+
+### SelectorCascade（级联引擎）
+
+```python
+from jimmyspider.parser import SelectorCascade
+
+cascade = SelectorCascade(known_selectors={"title": "h1"})
+page = cascade.extract(html, url="https://...", schema={
+    "fields": [{"name": "title", "type": "text"}, {"name": "content", "type": "text"}],
+    # llm_call=lambda html, field_name, field_def: "兜底结果"
+})
+
+page.selectors     # → 可复用的定位器字典 {"title": "h1"}
+page.tokens_used   # → LLM token 消耗（0 = 未用 LLM）
+```
+
+- `known_selectors`: 已知定位器字典，命中成本为 0
+- `field_thresholds`: 字段级置信度阈值，达到即停止降级（默认 0.80）
+- `llm_call`: LLM 兜底钩子，接收 `(html, field_name, field_def)`，返回提取值
+
+### ExtractionResult（提取结果）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `field_name` | `str` | 字段名 |
+| `value` | `str` / `None` | 提取到的值，失败为 `None` |
+| `selector_used` | `str` | 命中的定位器（如 `"h1"`、`"meta:og:title / jsonld"`、`"llm"`） |
+| `method` | `str` | `selector` / `semantic` / `meta` / `dom` / `llm` |
+| `confidence` | `float` | 置信度 0.0 ~ 1.0 |
+| `candidates` | `list` | 所有候选值（调试用） |
+| `latency_ms` | `float` | 提取耗时（毫秒） |
+| `is_valid` | `bool`（属性） | `value` 非空时返回 `True` |
+
+---
+
+## 分布式 jimmyspider.distributed
+
+多后端代理池、多数据库存储、监控告警三个子模块，均为异步接口，敏感配置统一来自全局配置。
+
+### DistributedProxyManager（多后端代理池）
+
+```python
+from jimmyspider.distributed import DistributedProxyManager
+from jimmyspider.distributed.proxy.backends import RedisPoolBackend, ClashPoolBackend
+
+manager = DistributedProxyManager(strategy="weighted")  # primary / fallback / round_robin / weighted
+manager.add_backend(RedisPoolBackend(...), priority=1, weight=10)
+manager.add_backend(ClashPoolBackend(), priority=2, weight=5)
+
+proxy = await manager.get_proxy(tags=["domestic"])   # 按策略取代理，后端故障自动降级
+await manager.report_success(proxy)                  # 上报成功，恢复健康度
+await manager.report_failure(proxy, error="403")     # 失败计数，连续 5 次自动摘除
+```
+
+- `add_backend(backend, priority=1, weight=10)` — `priority` 越小越优先；`weight` 用于加权随机策略（链式调用）
+- 内置后端：`RedisPoolBackend`（Redis 代理池）、`ClashPoolBackend`（Clash 节点池）、`TunnelAPIBackend`（隧道代理 API）
+
+### DistributedStorageManager（多库存储）
+
+```python
+from jimmyspider.distributed import DistributedStorageManager, MongoDBBackend, PostgreSQLBackend
+
+storage = DistributedStorageManager(strategy="dual_write")  # 见下表
+storage.set_primary(mongodb_backend)
+storage.set_backup(pg_backend)
+await storage.insert_one("reports", {"_id": "...", "title": "..."})
+```
+
+| 策略 | 行为 |
+|------|------|
+| `primary_only` | 只用主后端 |
+| `dual_write` | 双写主 + 备份，读主库（备份失败不影响主） |
+| `read_write_split` | 写主库、读从库 |
+| `shard_by_collection` | 按 collection 分片到不同后端 |
+
+接口：`insert_one` / `insert_many` / `upsert` / `find_one` / `find_many` / `bulk_write` / `update_one` / `update_many` / `delete_one` / `delete_many` / `count` / `aggregate` / `migrate_collection`（批量数据迁移）。
+
+### 监控告警
+
+- `MetricsCollector(namespace="spider", redis_url=...)` — Prometheus 格式指标采集：`incr()`（Counter）/ `set_gauge()`（Gauge）/ `observe()`（Histogram）/ `snapshot()`
+- `HealthChecker(check_interval=30.0, failure_threshold=3)` — `register(name, check_func)` 注册检查项，healthy/degraded/unhealthy 状态机，连续失败触发告警
+- `AlertManager()` — `add_rule(AlertRule(...))` 定义告警规则，`add_channel(...)` 接入企微/钉钉/飞书/Slack Webhook、Email、控制台
+
+完整文档见 [distributed.md](distributed.md)。
