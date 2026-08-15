@@ -1,6 +1,6 @@
 # 示例项目
 
-`examples/` 目录包含 28 个从实战中精选的爬虫示例，展示了 jimmySpider 框架在不同场景下的用法。
+`examples/` 目录包含 35 个实战爬虫示例，展示了 jimmySpider 框架在不同场景下的用法。
 
 ## 示例列表
 
@@ -34,6 +34,13 @@
 | 26 | `tech_literature` | Frontiers 科技文献 | MySQL | 期刊 → 检索 API → 详情并发、结构化字段解析、期刊 JSON 缓存 |
 | 27 | `robot_lab` | UC Berkeley BAIR 博客 | MySQL | 博客分页 + 详情并发、正文/作者/关键词提取 |
 | 28 | `clash_proxy_pool` | Clash 节点池（docker-compose） | MongoDB | ClashManager 健康检测、按下载量/403 自动切换节点 |
+| 29 | `blackrock_insights` | BlackRock 投资洞察 | MongoDB | 国际金融机构静态页解析 |
+| 30 | `ccdc_bond_journal` | 中债登债券期刊 | MongoDB | issues.json 数据驱动、期刊列表采集 |
+| 31 | `pmphai_ccdas` | CCDAS 医学会议 | MongoDB | 科室树构建、叶子节点遍历 |
+| 32 | `mq_pipeline` | 框架演示（离线） | SQLite | `jimmyspider.mq` 列表/详情分离、重试/死信链 |
+| 33 | `scheduler_demo` | 框架演示（离线） | SQLite | `AioSpiderEngine` vs `ScrapyEngine`、中间件 mock |
+| 34 | `parser_demo` | 框架演示（离线） | - | `SelectorCascade` 5 层级联 + LLM 成本对比 |
+| 35 | `monitor_demo` | 框架演示（离线） | - | MetricsCollector + HealthChecker + AlertManager |
 
 ## 运行示例
 
@@ -76,6 +83,13 @@ python spider.py
 | 科技期刊文献 | `tech_literature` |
 | 实验室博客 | `robot_lab` |
 | 代理池 / 节点切换 | `clash_proxy_pool` |
+| 国际金融机构站点 | `blackrock_insights` |
+| 债券/金融期刊 | `ccdc_bond_journal` |
+| 医学会议数据 | `pmphai_ccdas` |
+| MQ 列表/详情分离流水线 | `mq_pipeline` |
+| 调度引擎（Scrapy/AioSpider 风格） | `scheduler_demo` |
+| 智能解析（LLM 成本级联） | `parser_demo` |
+| 监控告警集成 | `monitor_demo` |
 
 ## 按请求处理器选示例
 

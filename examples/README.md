@@ -1,6 +1,7 @@
 # jimmySpider Examples
 
-This directory contains 28 real-world spider projects that demonstrate the jimmySpider framework in action.
+This directory contains 32 examples: 28 real-world spider projects plus 4 offline
+framework-subsystem demos (MQ pipeline, scheduler engine, smart parser, monitor/alerting).
 
 ## Quick Navigation
 
@@ -34,6 +35,10 @@ This directory contains 28 real-world spider projects that demonstrate the jimmy
 | 26 | [tech_literature/](tech_literature/) | Frontiers journals (MySQL) | 3-tier crawl: journals→API→details |
 | 27 | [robot_lab/](robot_lab/) | UC Berkeley BAIR blog (MySQL) | Pagination detection, async details |
 | 28 | [clash_proxy_pool/](clash_proxy_pool/) | Clash node pool (Docker) | mihomo container, health check, auto node switching |
+| 29 | [mq_pipeline/](mq_pipeline/) | List/detail MQ pipeline (offline demo) | `jimmyspider.mq` Redis/memory queue, retry + dead-letter, SQLite save |
+| 30 | [scheduler_demo/](scheduler_demo/) | Scheduler engine demo (offline) | `AioSpiderEngine` vs `ScrapyEngine`, middleware mock download |
+| 31 | [parser_demo/](parser_demo/) | Smart parsing demo (offline) | `SelectorCascade` 5-level cascade, TitleExtractor/ContentExtractor |
+| 32 | [monitor_demo/](monitor_demo/) | Monitor/alerting integration (offline) | `MetricsCollector`, `HealthChecker`, `AlertManager` + ConsoleChannel |
 
 ## How to Use These Examples
 
@@ -49,6 +54,7 @@ Find the example that most closely matches your target website type:
 - **Cloudflare/CDN-protected** → cicc_report (Jiasule), escholarship_org, oatd
 - **Database backend demos** → hello_mysql, hello_postgresql (switching), tech_news_flash, tiantian_fund, tech_literature, robot_lab (MySQL), arxiv_org, papercopilot, google_scholar (PostgreSQL)
 - **Proxy pool / node switching** → clash_proxy_pool
+- **Framework subsystem demos (fully offline)** → mq_pipeline, scheduler_demo, parser_demo, monitor_demo
 
 ### 2. Read the module docstring
 
@@ -118,6 +124,11 @@ spider_supplement.py →  fill in missing items
 | `ClashManager` node switching | clash_proxy_pool |
 | AJAX batch endpoint reverse-engineering | papercopilot |
 | Cross-example pipeline (sys.path reuse) | papercopilot, google_scholar |
+| `jimmyspider.mq` MQ pipeline (TaskMessage, retry/dead-letter) | mq_pipeline |
+| `AioSpiderEngine` / `ScrapyEngine` scheduling | scheduler_demo |
+| `jimmyspider.parser` 5-level selector cascade | parser_demo |
+| `jimmyspider.distributed.monitor` metrics/health/alerts | monitor_demo |
+| Offline demo with mock data (no external services) | mq_pipeline, scheduler_demo, parser_demo, monitor_demo |
 | `CurlCffiAsyncRequestHandler` usage | escholarship_org |
 | `AsyncRequestHandler` usage | oatd |
 | Cookie refresh via headless browser (Cloudflare) | oatd |

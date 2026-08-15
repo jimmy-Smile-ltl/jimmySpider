@@ -112,12 +112,20 @@ class MetricsCollector:
 
     # ---- 报告 ----
     def summary(self) -> dict:
-        """生成摘要报告"""
+        """生成摘要报告。自动聚合带 label 的计数（所有 worker/category 求和）。"""
         now = time.time()
         uptime = now - self._start_time
-        total_req = self._counters.get(self._metric_key("spider_requests_total"), 0)
-        success = self._counters.get(self._metric_key("spider_requests_success"), 0)
-        failed = self._counters.get(self._metric_key("spider_requests_failed"), 0)
+
+        def _sum_prefix(name: str) -> float:
+            """汇总所有以 {namespace}_{name} 开头的计数（含带 label 的键）"""
+            prefix = f"{self.namespace}_{name}"
+            return sum(
+                v for k, v in self._counters.items() if k.startswith(prefix)
+            )
+
+        total_req = _sum_prefix("spider_requests_total")
+        success = _sum_prefix("spider_requests_success")
+        failed = _sum_prefix("spider_requests_failed")
 
         return {
             "uptime_seconds": uptime,

@@ -183,7 +183,7 @@ class AlertManager:
             return s["total_requests"] > 10 and (1 - s["success_rate"]) > threshold
         return AlertRule("high_error_rate", check, severity="critical",
                         cooldown_seconds=cooldown,
-                        message_template="错误率超过 {threshold}")
+                        message_template="错误率超过阈值: {name} 触发")
 
     @staticmethod
     def queue_backlog_rule(max_depth: int = 10000, cooldown: float = 300) -> AlertRule:

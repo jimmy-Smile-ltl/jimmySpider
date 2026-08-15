@@ -1,0 +1,311 @@
+{
+  "id": "0001AA1000000007YQJ5",
+  "name": "科室",
+  "level": 1,
+  "children": [
+    {
+      "id": "A01",
+      "name": "预防保健科",
+      "level": 2,
+      "children": []
+    },
+    {
+      "id": "A03",
+      "name": "内科",
+      "level": 2,
+      "children": [
+        {
+          "id": "A03_04",
+          "name": "心血管内科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A03_05",
+          "name": "血液内科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A03_07",
+          "name": "内分泌",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A03_01",
+          "name": "呼吸内科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A03_02",
+          "name": "消化内科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A03_03",
+          "name": "神经内科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A03_08",
+          "name": "免疫学",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A03_10",
+          "name": "老年病",
+          "level": 3,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "A19",
+      "name": "肿瘤科",
+      "level": 2,
+      "children": []
+    },
+    {
+      "id": "A04",
+      "name": "外科",
+      "level": 2,
+      "children": [
+        {
+          "id": "A04_06",
+          "name": "心脏大血管外科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A04_01",
+          "name": "普通外科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A04_04",
+          "name": "泌尿外科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A04_05",
+          "name": "胸外科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A04_02",
+          "name": "神经外科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A04_03",
+          "name": "骨科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A04_07",
+          "name": "烧伤科",
+          "level": 3,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "A21",
+      "name": "康复医学科",
+      "level": 2,
+      "children": []
+    },
+    {
+      "id": "A10",
+      "name": "眼科",
+      "level": 2,
+      "children": []
+    },
+    {
+      "id": "A05",
+      "name": "妇产科",
+      "level": 2,
+      "children": [
+        {
+          "id": "A05_01",
+          "name": "妇科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A05_02",
+          "name": "产科",
+          "level": 3,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "A32",
+      "name": "医学影像科",
+      "level": 2,
+      "children": [
+        {
+          "id": "A32_05",
+          "name": "超声诊断",
+          "level": 3,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "A07",
+      "name": "儿科",
+      "level": 2,
+      "children": [
+        {
+          "id": "A07_05",
+          "name": "小儿心脏病",
+          "level": 3,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "A08",
+      "name": "小儿外科",
+      "level": 2,
+      "children": [
+        {
+          "id": "A08_05",
+          "name": "小儿神经外科",
+          "level": 3,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "A09",
+      "name": "儿童保健科",
+      "level": 2,
+      "children": [
+        {
+          "id": "A09_01",
+          "name": "儿童生长发育",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A09_02",
+          "name": "儿童营养",
+          "level": 3,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "A11",
+      "name": "耳鼻咽喉科",
+      "level": 2,
+      "children": [
+        {
+          "id": "A11_03",
+          "name": "咽喉科",
+          "level": 3,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "A12",
+      "name": "口腔科",
+      "level": 2,
+      "children": [
+        {
+          "id": "A12_02",
+          "name": "口腔颌面外科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A12_01",
+          "name": "口腔内科",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A12_03",
+          "name": "正畸",
+          "level": 3,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "A13",
+      "name": "皮肤科",
+      "level": 2,
+      "children": []
+    },
+    {
+      "id": "A16",
+      "name": "传染科",
+      "level": 2,
+      "children": [
+        {
+          "id": "A16_03",
+          "name": "肝炎",
+          "level": 3,
+          "children": []
+        },
+        {
+          "id": "A16_05",
+          "name": "动物源性传染病",
+          "level": 3,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "A17",
+      "name": "结核病科",
+      "level": 2,
+      "children": []
+    },
+    {
+      "id": "A26",
+      "name": "麻醉科",
+      "level": 2,
+      "children": []
+    },
+    {
+      "id": "A27",
+      "name": "疼痛科",
+      "level": 2,
+      "children": []
+    },
+    {
+      "id": "A28",
+      "name": "重症医学科",
+      "level": 2,
+      "children": []
+    },
+    {
+      "id": "D72",
+      "name": "药剂科(药房)",
+      "level": 2,
+      "children": []
+    },
+    {
+      "id": "D99",
+      "name": "其他科室",
+      "level": 2,
+      "children": []
+    }
+  ]
+}
