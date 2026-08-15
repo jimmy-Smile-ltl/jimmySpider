@@ -24,15 +24,21 @@
 
 ## ✨ 特性
 
+**核心能力**：
 - 🚀 **6 种请求处理器** — 单线程 / 多线程 / 异步 + curl_cffi TLS 指纹伪装（chrome110/120/124, safari, firefox）
-- 💾 **MongoDB 存储层** — 自动 upsert、批量写入（多线程并发）、去重
+- 💾 **三种数据库** — MongoDB / MySQL / PostgreSQL，`db_type` 一行切换
 - 🔄 **Redis 断点续爬** — 页码 / 日期 / 错误 URL 缓存，Ctrl+C 中断后自动恢复
 - 🌐 **代理管理** — 快代理隧道 + Clash 多节点代理池（健康检测 / 自动切换 / 黑名单）
 - 📁 **文件下载器** — 多线程 / 异步 / curl_cffi 三种模式，MIME 检测 + 智能重试
 - 📝 **日志系统** — 控制台 + 按天轮转文件日志（自动清理超出大小限制的旧日志）
-- 🧹 **HTML 清洗与归档** — 移除 style/link/注释，按日期保存
-- 📅 **日期智能解析** — 支持绝对时间（各种格式）+ 相对时间（"3分钟前"、"昨天"）
-- 🛡️ **反爬对抗** — Cloudflare / 加速乐 CDN / 瑞数 / AWS WAF 等多种反爬方案的内置支持
+- 🛡️ **反爬对抗** — Cloudflare / 加速乐 CDN / 瑞数 / AWS WAF 内置支持
+- 🎯 **去重 + 限速** — `RFPDupeFilter` SHA1 指纹去重 + `DomainRateLimiter` 按域名限速
+
+**分布式子系统**（可选，按需导入）：
+- 📨 **消息队列** `jimmyspider.mq` — Redis/Kafka/RabbitMQ 统一接口，优先级/延迟/重试/死信
+- ⚙️ **调度引擎** `jimmyspider.scheduler` — Scrapy 式（线程）+ AioSpider 式（asyncio）五层引擎
+- 🧠 **智能解析** `jimmyspider.parser` — 5 层成本级联提取 + LLM 兜底（省 99.96% 成本）
+- 🌍 **分布式** `jimmyspider.distributed` — 多后端代理池 / 双写存储 / Prometheus 监控告警
 
 ## 📦 安装
 
@@ -448,7 +454,11 @@ my_spider_project/
 | [docs/configuration.md](docs/configuration.md) | 所有环境变量详解 |
 | [docs/request_handlers.md](docs/request_handlers.md) | 请求处理器选择指南 |
 | [docs/proxy.md](docs/proxy.md) | 代理配置指南（隧道 + Clash） |
-| [docs/examples.md](docs/examples.md) | 18 个示例项目详解 |
+| [docs/examples.md](docs/examples.md) | 28 个示例项目详解 |
+| [docs/distributed.md](docs/distributed.md) | 分布式架构（MQ/调度/解析/代理/存储/监控） |
+| [jimmyspider/mq/docs/message_queue.md](jimmyspider/mq/docs/message_queue.md) | 消息队列选型与用法 |
+| [jimmyspider/scheduler/docs/scheduler.md](jimmyspider/scheduler/docs/scheduler.md) | 调度引擎使用指南 |
+| [jimmyspider/parser/README.md](jimmyspider/parser/README.md) | 智能解析（成本级联 + LLM） |
 
 ## 🤝 贡献
 

@@ -6,19 +6,25 @@
 
 A mature, flexible Python web scraping framework, battle-tested across **140+ websites**.
 
-[中文文档](README_zh.md)
+[中文文档](README.md)
 
 ## ✨ Features
 
+**Core**:
 - 🚀 **6 Request Handlers** — Sync / Thread / Async + curl_cffi TLS fingerprinting
-- 💾 **MongoDB Storage** — Auto upsert, batch insert, deduplication
+- 💾 **3 Databases** — MongoDB / MySQL / PostgreSQL, switch via `db_type`
 - 🔄 **Redis Checkpoint Resume** — Page/date/error URL cache, auto-resume on restart
 - 🌐 **Proxy Management** — Tunnel proxy + Clash multi-node pool (health check / auto-switch)
 - 📁 **File Downloader** — Thread / Async / curl_cffi modes
 - 📝 **Logging System** — Console + daily rotating file logs
-- 🧹 **HTML Clean & Archive** — Date-based HTML storage
-- 📅 **Smart Date Parsing** — Absolute & relative time parsing
-- 🛡️ **Anti-Bot Arsenal** — Cloudflare / JsJiami / RS / AWS WAF countermeasures
+- 🛡️ **Anti-Bot Arsenal** — Cloudflare / Jiasule / RS / AWS WAF countermeasures
+- 🎯 **Dedup + Rate Limit** — `RFPDupeFilter` SHA1 dedup + `DomainRateLimiter` per-domain
+
+**Distributed subsystems** (optional):
+- 📨 **Message Queue** `jimmyspider.mq` — Redis/Kafka/RabbitMQ unified interface
+- ⚙️ **Scheduler** `jimmyspider.scheduler` — Scrapy-style + AioSpider-style engines
+- 🧠 **Smart Parser** `jimmyspider.parser` — 5-level cost cascade + LLM fallback
+- 🌍 **Distributed** `jimmyspider.distributed` — multi-backend proxy / dual-write storage / Prometheus monitoring
 
 ## 📦 Installation
 
