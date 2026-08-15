@@ -8,6 +8,11 @@
 """
 
 import asyncio
+import sys
+
+# Windows GBK 控制台无法打印 emoji，统一切到 UTF-8 输出
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 from jimmyspider.distributed import (
     MetricsCollector, HealthChecker, AlertManager, DashboardExporter,
